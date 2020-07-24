@@ -1,0 +1,21 @@
+{
+    "GUILD_PROFILE": "Informações do servidor",
+    "GUILD_INFO": "Informações do servidor",
+    "LOADING": "Processando",
+    "FRIENDS_IN_GUILD": "Amigos",
+    "BLOCKED_USERS_IN_GUILD": "Usuários bloqueados",
+    "NOT_IMPLEMENTED_YET": "Ainda não implementado",
+    "JOINED_AT": "Data de sua entrada",
+    "CREATED_AT": "Data de criação",
+    "COMMUNITY": "Comunidade",
+    "COMMERCE": "Contém canais de loja",
+    "ENABLED_DISCOVERABLE_BEFORE": "Ativado Servidor público antes",
+    "INVITE_SPLASH": "Plano de fundo de convite do servidor",
+    "BANNER": "Banner do servidor",
+    "ANIMATED_ICON": "Ícone animado do servidor",
+    "DISCOVERABLE": "Servidor público",
+    "WELCOME_SCREEN_ENABLED": "Tela de bem-vindo do servidor ativada",
+    "NEWS": "Contém canais de anúncio",
+    "FEATURABLE": "Pode ser inserido na home do Discover",
+    "VIP_REGIONS": "Regiões VIP"
+}
