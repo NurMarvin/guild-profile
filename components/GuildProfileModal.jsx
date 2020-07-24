@@ -232,7 +232,7 @@ module.exports = class GuildProfileModal extends React.PureComponent {
                 />
                 <span className={this.classes.username}>{guild.name}</span>
               </div>
-              {guild.features.length > 0 && (
+              {features.length > 0 && (
                 <Flex className={this.classes.profileBadges}>
                   {features.map((feature) => {
                     return (
