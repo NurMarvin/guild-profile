@@ -1,0 +1,21 @@
+{
+  "GUILD_PROFILE": "Профиль Сервера",
+  "GUILD_INFO": "Информация о Сервере",
+  "LOADING": "Загрузка",
+  "FRIENDS_IN_GUILD": "Друзья",
+  "BLOCKED_USERS_IN_GUILD": "Заблокированные Пользователи",
+  "NOT_IMPLEMENTED_YET": "Еще Не Реализовано",
+  "JOINED_AT": "Зашёл",
+  "CREATED_AT": "Создан",
+  "COMMUNITY": "Публичный",
+  "COMMERCE": "Каналы \"Магазины\"",
+  "ENABLED_DISCOVERABLE_BEFORE": "Enabled Discoverable Before",
+  "INVITE_SPLASH": "Фон Приглашения На сервер",
+  "BANNER": "Баннер Сервера",
+  "ANIMATED_ICON": "Анимированная Иконка Сервера",
+  "DISCOVERABLE": "Видимый",
+  "WELCOME_SCREEN_ENABLED": "Экран Приветствия Включен",
+  "NEWS": "Канал Объявлений",
+  "FEATURABLE": "Featurable",
+  "VIP_REGIONS": "VIP Регионы"
+}
