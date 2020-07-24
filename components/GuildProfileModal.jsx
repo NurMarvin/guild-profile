@@ -232,23 +232,25 @@ module.exports = class GuildProfileModal extends React.PureComponent {
                 />
                 <span className={this.classes.username}>{guild.name}</span>
               </div>
-              <Flex className={this.classes.profileBadges}>
-                {features.map((feature) => {
-                  return (
-                    <Tooltip
-                      className={this.classes.profileBadgeWrapper}
-                      position='top'
-                      text={Messages[feature.name]}
-                    >
-                      <Clickable role='button' tag='div'>
-                        <div
-                          className={`${this.classes.profileBadge} ${feature.className}`}
-                        />
-                      </Clickable>
-                    </Tooltip>
-                  );
-                })}
-              </Flex>
+              {guild.features.length > 0 && (
+                <Flex className={this.classes.profileBadges}>
+                  {features.map((feature) => {
+                    return (
+                      <Tooltip
+                        className={this.classes.profileBadgeWrapper}
+                        position='top'
+                        text={Messages[feature.name]}
+                      >
+                        <Clickable role='button' tag='div'>
+                          <div
+                            className={`${this.classes.profileBadge} ${feature.className}`}
+                          />
+                        </Clickable>
+                      </Tooltip>
+                    );
+                  })}
+                </Flex>
+              )}
               <Flex className={this.classes.profileBadges}>
                 <Text className={this.classes.guildDetail}>
                   {counts ? (
