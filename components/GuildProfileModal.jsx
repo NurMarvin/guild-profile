@@ -11,6 +11,7 @@ const {
   Clickable,
   Tooltip,
 } = require('powercord/components');
+const { clipboard } = window.require('electron');
 const AsyncComponent = require('powercord/components/AsyncComponent');
 
 const VerticalScroller = AsyncComponent.from(
@@ -157,6 +158,8 @@ module.exports = class GuildProfileModal extends React.PureComponent {
       ...getModule(['tabBarContainer'], false),
       guildIconContainer: getModule(['guildIconContainer'], false)
         .guildIconContainer,
+      avatarWrapperNormal: getModule(['avatarWrapperNormal'], false)
+        .avatarWrapperNormal,
     };
 
     this.state = {};
@@ -200,10 +203,24 @@ module.exports = class GuildProfileModal extends React.PureComponent {
       <Flex className={this.classes.root} direction={Flex.Direction.VERTICAL}>
         <div className={this.classes.topSectionNormal}>
           <header className={this.classes.header}>
-            <GuildIcon
-              className={`${this.classes.avatar} guild-icon-avatar-size`}
-              guild={guild}
-            />
+            <Clickable
+              className={this.classes.avatarWrapperNormal}
+              onClick={() =>
+                clipboard.writeText(
+                  `https://cdn.discordapp.com/icons/${guild.id}/${guild.icon}.png?size=1024`
+                )
+              }
+            >
+              <Tooltip
+                position='top'
+                text={Messages.CLICK_TO_COPY_SERVER_ICON_URL}
+              >
+                <GuildIcon
+                  className={`${this.classes.avatar} guild-icon-avatar-size`}
+                  guild={guild}
+                />
+              </Tooltip>
+            </Clickable>
             <div className={this.classes.headerInfo}>
               <div className={this.classes.nameTag}>
                 <GuildBadge
