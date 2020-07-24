@@ -4,9 +4,7 @@ const {
   i18n: { Messages },
   getModuleByDisplayName,
 } = require('powercord/webpack');
-const path = require('path');
 const {
-  Spinner,
   Text,
   Flex,
   TabBar,
