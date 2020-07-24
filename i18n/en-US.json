@@ -1,0 +1,21 @@
+{
+  "GUILD_PROFILE": "Server Profile",
+  "GUILD_INFO": "Server Info",
+  "LOADING": "Loading",
+  "FRIENDS_IN_GUILD": "Friends",
+  "BLOCKED_USERS_IN_GUILD": "Blocked Users",
+  "NOT_IMPLEMENTED_YET": "Not implemented yet",
+  "JOINED_AT": "Joined at",
+  "CREATED_AT": "Created at",
+  "COMMUNITY": "Community",
+  "COMMERCE": "Store Channels",
+  "ENABLED_DISCOVERABLE_BEFORE": "Enabled Discoverable Before",
+  "INVITE_SPLASH": "Server Invite Background",
+  "BANNER": "Server Banner",
+  "ANIMATED_ICON": "Animated Server Icon",
+  "DISCOVERABLE": "Discoverable",
+  "WELCOME_SCREEN_ENABLED": "Welcome Screen Enabled",
+  "NEWS": "Announcement Channels",
+  "FEATURABLE": "Featurable",
+  "VIP_REGIONS": "VIP Regions"
+}

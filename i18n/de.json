@@ -1,0 +1,21 @@
+{
+  "GUILD_PROFILE": "Serverprofil",
+  "GUILD_INFO": "Serverinfo",
+  "LOADING": "Lade",
+  "FRIENDS_IN_GUILD": "Freunde",
+  "BLOCKED_USERS_IN_GUILD": "Blockierte Nutzer",
+  "NOT_IMPLEMENTED_YET": "Noch nicht implementiert",
+  "JOINED_AT": "Server betreten",
+  "CREATED_AT": "Server erstellt",
+  "COMMUNITY": "Community",
+  "COMMERCE": "Store-Kanäle",
+  "ENABLED_DISCOVERABLE_BEFORE": "Hat \"Entdeckbar\" vorher schon mal aktiviert",
+  "INVITE_SPLASH": "Hintergrund für Servereinladungen",
+  "BANNER": "Server Banner",
+  "ANIMATED_ICON": "Animiertes Servericon",
+  "DISCOVERABLE": "Entdeckbar",
+  "WELCOME_SCREEN_ENABLED": "Willkommensbildschirm aktiviert",
+  "NEWS": "Ankündigungskanäle",
+  "FEATURABLE": "Vorstellbar",
+  "VIP_REGIONS": "VIP Regionen"
+}
