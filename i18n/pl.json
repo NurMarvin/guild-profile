@@ -1,0 +1,22 @@
+{
+  "GUILD_PROFILE": "Profil serwera",
+  "GUILD_INFO": "Informacje o serwerze",
+  "LOADING": "Ładowanie",
+  "FRIENDS_IN_GUILD": "Znajomi",
+  "BLOCKED_USERS_IN_GUILD": "Zablokowani użytkownicy",
+  "NOT_IMPLEMENTED_YET": "Jeszcze niezaimplementowane",
+  "JOINED_AT": "Data dołączenia",
+  "CREATED_AT": "Data utworzenia",
+  "COMMUNITY": "Społeczność",
+  "COMMERCE": "Kanały sklepu",
+  "ENABLED_DISCOVERABLE_BEFORE": "Wcześniej włączone odnajdowanie serwera",
+  "INVITE_SPLASH": "Tło zaproszenia do serwera",
+  "BANNER": "Banner serwera",
+  "ANIMATED_ICON": "Animowana ikona serwera",
+  "DISCOVERABLE": "Odnajdywalny",
+  "WELCOME_SCREEN_ENABLED": "Włączony ekran powitalny",
+  "NEWS": "Kanały ogłoszeń",
+  "FEATURABLE": "Featurable",
+  "VIP_REGIONS": "Regiony VIP",
+  "CLICK_TO_COPY_SERVER_ICON_URL": "Kliknij aby skopiować URL ikony serwera"
+}
