@@ -18,5 +18,9 @@
   "NEWS": "Kanały ogłoszeń",
   "FEATURABLE": "Featurable",
   "VIP_REGIONS": "Regiony VIP",
-  "CLICK_TO_COPY_SERVER_ICON_URL": "Kliknij aby skopiować URL ikony serwera"
+  "CLICK_TO_COPY_SERVER_ICON_URL": "Kliknij aby skopiować URL ikony serwera",
+  "NO_FRIENDS_IN_THIS_GUILD": "Brak znajomych na tym serwerze",
+  "NO_BLOCKED_USERS_IN_THIS_GUILD": "Brak zablokowanych użytkowników na tym serwerze",
+  "GUILD_PREMIUM_SUBSCRIBER_COUNT": "Ilość osób ulepszających serwer",
+  "GUILD_PREMIUM_TIER": "Poziom ulepszenia serwera"
 }
