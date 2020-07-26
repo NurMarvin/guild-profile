@@ -42,6 +42,8 @@ const UserProfileModalActionCreators = getModule(
   false
 );
 
+const ContextMenu = getModule(['closeContextMenu'], false);
+
 const GuildProfileSections = {
   GUILD_INFO: 'GUILD_INFO',
   FRIENDS: 'FRIENDS',
@@ -202,6 +204,10 @@ class GuildInfo extends React.PureComponent {
     this.setState({ owner: await getUser(ownerId) });
   }
 
+  handleContextMenu(event) {
+    ContextMenu.openContextMenu(event, (props) => {});
+  }
+
   render() {
     const moment = getModule(['momentProperties'], false);
     const { extractTimestamp } = getModule(['extractTimestamp'], false);
@@ -232,6 +238,7 @@ class GuildInfo extends React.PureComponent {
             {owner ? (
               <Mention
                 className='mention'
+                onContextMenu={(e) => this.handleContextMenu(e)}
                 onClick={() => UserProfileModalActionCreators.open(owner.id)}
               >
                 @{owner.username}#{owner.discriminator}
