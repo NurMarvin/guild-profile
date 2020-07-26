@@ -1,5 +1,6 @@
 const {
   React,
+  Flux,
   getModule,
   i18n: { Messages },
   getModuleByDisplayName,
@@ -10,6 +11,7 @@ const {
   TabBar,
   Clickable,
   Tooltip,
+  Spinner,
 } = require('powercord/components');
 const { clipboard } = window.require('electron');
 const AsyncComponent = require('powercord/components/AsyncComponent');
@@ -29,7 +31,15 @@ getModuleByDisplayName('InviteButton', true, true).then((Button) => {
   ['Data'].forEach((prop) => (InviteButton[prop] = Button[prop]));
 });
 
+const DiscordTag = AsyncComponent.from(getModuleByDisplayName('DiscordTag'));
+
 const { GuildIcon } = getModule(['GuildIcon'], false);
+const { Avatar } = getModule(['Avatar'], false);
+
+const UserProfileModalActionCreators = getModule(
+  ['fetchProfile', 'open'],
+  false
+);
 
 const GuildProfileSections = {
   GUILD_INFO: 'GUILD_INFO',
@@ -58,7 +68,7 @@ class Section extends React.PureComponent {
     super(props);
 
     this.classes = {
-      ...getModule(['marginBottom8'], false),
+      marginBottom8: getModule(['marginBottom8'], false).marginBottom8,
     };
   }
 
@@ -76,6 +86,95 @@ class Section extends React.PureComponent {
         <Text selectable={true}>{children}</Text>
       </FormSection>
     );
+  }
+}
+
+class RelationshipRow extends React.PureComponent {
+  constructor(props) {
+    super(props);
+
+    this.classes = {
+      ...getModule(['listRow'], false),
+    };
+
+    this.state = {};
+  }
+
+  render() {
+    const { user, status, onSelect } = this.props;
+
+    return (
+      <Clickable
+        className={this.classes.listRow}
+        onClick={() => onSelect(user.id)}
+        onSelect={() => onSelect(user.id)}
+      >
+        <Avatar
+          className={this.classes.listAvatar}
+          src={user.avatarURL}
+          size='SIZE_40'
+          status={status}
+        />
+        <DiscordTag
+          user={user}
+          className={this.classes.listName}
+          discriminatorClass={this.classes.listDiscriminator}
+        />
+      </Clickable>
+    );
+  }
+}
+
+class Relationships extends React.PureComponent {
+  constructor(props) {
+    super(props);
+
+    this.classes = {
+      empty: getModule(['body', 'empty'], false).empty,
+      nelly: getModule(['flexWrapper', 'image'], false).image,
+      ...getModule(['emptyIcon'], false),
+      ...getModule(['fade', 'thin'], false),
+    };
+  }
+
+  handleSelect(userId) {
+    UserProfileModalActionCreators.open(userId);
+  }
+
+  render() {
+    const { relationships, section } = this.props;
+
+    if (!relationships) {
+      return (
+        <div className={this.classes.empty}>
+          <Spinner />
+        </div>
+      );
+    } else if (relationships.length < 1) {
+      return (
+        <div className={this.classes.empty}>
+          <div className={this.classes.emptyIconFriends} />
+          <div className={this.classes.emptyText}>
+            {Messages[`NO_${section}_IN_THIS_GUILD`]}
+          </div>
+        </div>
+      );
+    } else {
+      return (
+        <VerticalScroller
+          className={[
+            this.classes.listScroller,
+            this.classes.fade,
+            this.classes.thin,
+            this.classes.scrollerBase,
+          ].join(' ')}
+        >
+          {relationships.map((relationShip) => (
+            <RelationshipRow onSelect={this.handleSelect} user={relationShip} />
+          ))}
+        </VerticalScroller>
+      );
+    }
   }
 }
 
@@ -149,7 +248,7 @@ class GuildInfo extends React.PureComponent {
   }
 }
 
-module.exports = class GuildProfileModal extends React.PureComponent {
+class GuildProfileModal extends React.PureComponent {
   constructor(props) {
     super(props);
 
@@ -162,7 +261,11 @@ module.exports = class GuildProfileModal extends React.PureComponent {
         .avatarWrapperNormal,
     };
 
-    this.state = {};
+    _.bindAll(this, ['handleSectionSelect']);
+
+    this.state = {
+      selectedSection: props.section,
+    };
   }
 
   async componentDidMount() {
@@ -171,17 +274,27 @@ module.exports = class GuildProfileModal extends React.PureComponent {
     this.setState({ counts: memberData });
   }
 
+  handleSectionSelect(selectedSection) {
+    this.setState({ selectedSection });
+  }
+
   render() {
-    const { guild, section: selectedSection } = this.props;
-    const { counts } = this.state;
+    const { guild } = this.props;
+    const { counts, selectedSection } = this.state;
 
     let component;
-    const props = {};
+    const props = {
+      section: selectedSection,
+    };
 
     switch (selectedSection) {
       case GuildProfileSections.FRIENDS:
+        component = Relationships;
+        props.relationships = this.props.friends;
         break;
       case GuildProfileSections.BLOCKED_USERS:
+        component = Relationships;
+        props.relationships = this.props.blocked;
         break;
       case GuildProfileSections.GUILD_INFO:
       default:
@@ -280,31 +393,62 @@ module.exports = class GuildProfileModal extends React.PureComponent {
                   {Messages.GUILD_INFO}
                 </TabBar.Item>
                 <TabBar.Item
-                  color='#4f545c'
                   className={this.classes.tabBarItem}
                   id={GuildProfileSections.FRIENDS}
                 >
-                  <Tooltip text={Messages.NOT_IMPLEMENTED_YET} position='top'>
-                    {Messages.FRIENDS_IN_GUILD}
-                  </Tooltip>
+                  {Messages.FRIENDS_IN_GUILD}
                 </TabBar.Item>
                 <TabBar.Item
-                  color='#4f545c'
                   className={this.classes.tabBarItem}
                   id={GuildProfileSections.BLOCKED_USERS}
                 >
-                  <Tooltip text={Messages.NOT_IMPLEMENTED_YET} position='top'>
-                    {Messages.BLOCKED_USERS_IN_GUILD}
-                  </Tooltip>
+                  {Messages.BLOCKED_USERS_IN_GUILD}
                 </TabBar.Item>
               </TabBar>
             </div>
           </div>
         </div>
         <div className={this.classes.body}>
-          {React.createElement(component, props)}
+          {React.createElement(component || 'div', props)}
         </div>
       </Flex>
     );
   }
-};
+}
+
+module.exports = Flux.connectStoresAsync(
+  [
+    getModule(['getRelationships']),
+    getModule(['getCurrentUser']),
+    getModule(['isMember']),
+  ],
+  ([relationshipsStore, userStore, membersStore], compProps) => {
+    // Its safe to assume if the module aboves were found that this one is also loaded
+    const userFetcher = getModule(['getUser'], false);
+    const relationships = relationshipsStore.getRelationships();
+    const props = {
+      friends: [],
+      blocked: [],
+    };
+
+    for (const userId in relationships) {
+      if (!membersStore.isMember(compProps.guild.id, userId)) {
+        continue;
+      }
+
+      const relationshipType = relationships[userId];
+      const user = userStore.getUser(userId);
+      if (!user) {
+        userFetcher.getUser(userId);
+        continue;
+      }
+
+      if (relationshipType === 1) {
+        props.friends.push(user);
+      } else if (relationshipType === 2) {
+        props.blocked.push(user);
+      }
+    }
+    return props;
+  }
+)(GuildProfileModal);
