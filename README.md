@@ -4,7 +4,7 @@ Open a guild profile modal that gives you various information about the guild.
 
 ## Preview
 
-![Preview Image](https://i.imgur.com/ivJD20Y.png)
+![Preview Image](https://i.imgur.com/C4nLf2Q.png)
 
 ## Installation
 
