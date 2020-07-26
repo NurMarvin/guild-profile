@@ -312,28 +312,36 @@ class GuildProfileModal extends React.PureComponent {
         };
       });
 
+    const guildIcon = (
+      <GuildIcon
+        className={`${this.classes.avatar} guild-icon-avatar-size`}
+        guild={guild}
+      />
+    );
+
     return (
       <Flex className={this.classes.root} direction={Flex.Direction.VERTICAL}>
         <div className={this.classes.topSectionNormal}>
           <header className={this.classes.header}>
-            <Clickable
-              className={this.classes.avatarWrapperNormal}
-              onClick={() =>
-                clipboard.writeText(
-                  `https://cdn.discordapp.com/icons/${guild.id}/${guild.icon}.png?size=1024`
-                )
-              }
-            >
-              <Tooltip
-                position='top'
-                text={Messages.CLICK_TO_COPY_SERVER_ICON_URL}
+            {guild.icon ? (
+              <Clickable
+                className={this.classes.avatarWrapperNormal}
+                onClick={() =>
+                  clipboard.writeText(
+                    `https://cdn.discordapp.com/icons/${guild.id}/${guild.icon}.png?size=1024`
+                  )
+                }
               >
-                <GuildIcon
-                  className={`${this.classes.avatar} guild-icon-avatar-size`}
-                  guild={guild}
-                />
-              </Tooltip>
-            </Clickable>
+                <Tooltip
+                  position='top'
+                  text={Messages.CLICK_TO_COPY_SERVER_ICON_URL}
+                >
+                  {guildIcon}
+                </Tooltip>
+              </Clickable>
+            ) : (
+              guildIcon
+            )}
             <div className={this.classes.headerInfo}>
               <div className={this.classes.nameTag}>
                 <GuildBadge
