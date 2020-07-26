@@ -22,6 +22,7 @@ const VerticalScroller = AsyncComponent.from(
 const FormSection = AsyncComponent.from(getModuleByDisplayName('FormSection'));
 const GuildBadge = AsyncComponent.from(getModuleByDisplayName('GuildBadge'));
 const Anchor = AsyncComponent.from(getModuleByDisplayName('Anchor'));
+const Mention = AsyncComponent.from(getModuleByDisplayName('Anchor'));
 
 const InviteButton = AsyncComponent.from(
   getModuleByDisplayName('InviteButton')
@@ -194,6 +195,13 @@ class GuildInfo extends React.PureComponent {
     };
   }
 
+  async componentDidMount() {
+    const { getUser } = getModule(['getUser'], false);
+    const { ownerId } = this.props.guild;
+
+    this.setState({ owner: await getUser(ownerId) });
+  }
+
   render() {
     const moment = getModule(['momentProperties'], false);
     const { extractTimestamp } = getModule(['extractTimestamp'], false);
@@ -204,7 +212,7 @@ class GuildInfo extends React.PureComponent {
       verificationLevel,
       explicitContentFilter,
     } = guild;
-    const { streamerMode } = this.state;
+    const { streamerMode, owner } = this.state;
 
     if (streamerMode) {
       return (
@@ -220,6 +228,18 @@ class GuildInfo extends React.PureComponent {
     return (
       <VerticalScroller className='guild-profile' fade={true}>
         <Flex justify={Flex.Justify.START} wrap={Flex.Wrap.WRAP}>
+          <Section title={Messages.GUILD_OWNER}>
+            {owner ? (
+              <Mention
+                className='mention'
+                onClick={() => UserProfileModalActionCreators.open(owner.id)}
+              >
+                @{owner.username}#{owner.discriminator}
+              </Mention>
+            ) : (
+              Messages.LOADING + '...'
+            )}
+          </Section>
           <Section title={Messages.FORM_LABEL_SERVER_DESCRIPTION}>
             {description}
           </Section>
@@ -230,17 +250,23 @@ class GuildInfo extends React.PureComponent {
               </Anchor>
             </Section>
           )}
+          <Section title={Messages.CREATED_AT}>
+            {moment(extractTimestamp(guild.id)).format('LLL')}
+          </Section>
+          <Section title={Messages.JOINED_AT}>
+            {moment(guild.joinedAt).format('LLL')}
+          </Section>
           <Section title={Messages.FORM_LABEL_VERIFICATION_LEVEL}>
             {Messages[GuildVerificationLevels[verificationLevel]]}
           </Section>
           <Section title={Messages.FORM_LABEL_EXPLICIT_CONTENT_FILTER}>
             {Messages[GuildExplicitContentFilterTypes[explicitContentFilter]]}
           </Section>
-          <Section title={Messages.CREATED_AT}>
-            {moment(extractTimestamp(guild.id)).format('LLL')}
+          <Section title={Messages.GUILD_PREMIUM_SUBSCRIBER_COUNT}>
+            {guild.premiumSubscriberCount}
           </Section>
-          <Section title={Messages.JOINED_AT}>
-            {moment(guild.joinedAt).format('LLL')}
+          <Section title={Messages.GUILD_PREMIUM_TIER}>
+            {guild.premiumTier}
           </Section>
         </Flex>
       </VerticalScroller>
