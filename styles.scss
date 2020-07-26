@@ -59,6 +59,14 @@
   .profile-badge-vip-regions {
     background-image: url('https://raw.githubusercontent.com/NurMarvin/guild-profile/master/assets/dark/vip-regions.svg');
   }
+
+  .profile-badge-more-emoji {
+    background-image: url('https://raw.githubusercontent.com/NurMarvin/guild-profile/master/assets/dark/more-emoji.svg');
+  }
+  
+  .profile-badge-relay-enabled {
+    background-image: url('https://raw.githubusercontent.com/NurMarvin/guild-profile/master/assets/dark/relay-enabled.svg');
+  }
 }
 
 .theme-light {
@@ -108,5 +116,13 @@
 
   .profile-badge-vip-regions {
     background-image: url('https://raw.githubusercontent.com/NurMarvin/guild-profile/master/assets/light/vip-regions.svg');
+  }
+
+  .profile-badge-more-emoji {
+    background-image: url('https://raw.githubusercontent.com/NurMarvin/guild-profile/master/assets/light/more-emoji.svg');
+  }
+
+  .profile-badge-relay-enabled {
+    background-image: url('https://raw.githubusercontent.com/NurMarvin/guild-profile/master/assets/light/relay-enabled.svg');
   }
 }
