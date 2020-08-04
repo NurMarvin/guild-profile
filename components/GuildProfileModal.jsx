@@ -314,6 +314,7 @@ class GuildProfileModal extends React.PureComponent {
   render() {
     const { guild } = this.props;
     const { counts, selectedSection } = this.state;
+    const { icon } = guild;
 
     let component;
     const props = {
@@ -360,11 +361,12 @@ class GuildProfileModal extends React.PureComponent {
             {guild.icon ? (
               <Clickable
                 className={this.classes.avatarWrapperNormal}
-                onClick={() =>
+                onClick={() => {
+                  const iconExt = icon.startsWith('a_') ? 'gif' : 'png';
                   clipboard.writeText(
-                    `https://cdn.discordapp.com/icons/${guild.id}/${guild.icon}.png?size=1024`
-                  )
-                }
+                    `https://cdn.discordapp.com/icons/${guild.id}/${icon}.${iconExt}?size=1024`
+                  );
+                }}
               >
                 <Tooltip
                   position='top'
