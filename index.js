@@ -60,15 +60,13 @@ module.exports = class GuildProfile extends Plugin {
     const key = 'guild-profile';
     const Menu = await getModule(['MenuItem']);
     const { getGuild } = await getModule(['getGuild']);
-    const { getGuildId } = await getModule(['getGuildId']);
+    const { getGuildId } = await getModule(['getLastSelectedGuildId']);
 
     const requestMemberData = (guildId) => {
       return this.requestMemberData(guildId);
     }
 
     inject('guild-profile-menu', Menu, 'default', ([{ children }], res) => {
-      const guild = getGuild(getGuildId());
-
       if (res.props.id !== 'guild-header-popout') return res;
 
       if (!children.some(group => {
@@ -85,7 +83,7 @@ module.exports = class GuildProfile extends Plugin {
             React.createElement(Menu.MenuItem, {
               key,
               label: Messages.GUILD_PROFILE,
-              action: () => open(() => React.createElement(GuildProfileModal, { guild, section: 'GUILD_INFO', requestMemberData }))
+              action: () => open(() => React.createElement(GuildProfileModal, { guild: getGuild(getGuildId()), section: 'GUILD_INFO', requestMemberData }))
             })
           )
         );
