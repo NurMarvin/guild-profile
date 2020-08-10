@@ -1,3 +1,8 @@
+/*
+ * Copyright (c) 2020 NurMarvin (Marvin Witt)
+ * Licensed under the Open Software License version 3.0
+ */
+
 const { Plugin } = require('powercord/entities');
 const { inject, uninject } = require('powercord/injector');
 const { React, getModule, FluxDispatcher, i18n: { Messages } } = require('powercord/webpack');
@@ -8,6 +13,7 @@ const GuildProfileModal = require('./components/GuildProfileModal');
 
 module.exports = class GuildProfile extends Plugin {
   async startPlugin() {
+    this.log('Icons provided by https://iconify.design/');
     powercord.api.i18n.loadAllStrings(i18n);
     this.loadStylesheet('styles.scss');
     this._injectContextMenu();
