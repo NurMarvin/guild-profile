@@ -27,7 +27,7 @@ module.exports = class GuildProfile extends Plugin {
 
       function onReceived(e) {
         if (e.guildId === guildId) {
-          let membersOnline = e.groups.map(group => group.count).reduce((a, b) => {
+          let membersOnline = e.groups.map(group => group.id != "offline" ? group.count : 0).reduce((a, b) => {
             return a + b;
           }, 0);
           resolve({ members: e.memberCount, membersOnline });
