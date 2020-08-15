@@ -21,9 +21,7 @@ const {
 const { clipboard } = window.require('electron');
 const AsyncComponent = require('powercord/components/AsyncComponent');
 
-const VerticalScroller = AsyncComponent.from(
-  getModuleByDisplayName('VerticalScroller')
-);
+const { AdvancedScrollerThin } = getModule(['AdvancedScrollerThin'], false);
 const FormSection = AsyncComponent.from(getModuleByDisplayName('FormSection'));
 const GuildBadge = AsyncComponent.from(getModuleByDisplayName('GuildBadge'));
 const Anchor = AsyncComponent.from(getModuleByDisplayName('Anchor'));
@@ -169,7 +167,7 @@ class Relationships extends React.PureComponent {
       );
     } else {
       return (
-        <VerticalScroller
+        <AdvancedScrollerThin
           className={[
             this.classes.listScroller,
             this.classes.fade,
@@ -180,7 +178,7 @@ class Relationships extends React.PureComponent {
           {relationships.map((relationShip) => (
             <RelationshipRow onSelect={this.handleSelect} user={relationShip} />
           ))}
-        </VerticalScroller>
+        </AdvancedScrollerThin>
       );
     }
   }
@@ -237,7 +235,7 @@ class GuildInfo extends React.PureComponent {
     }
 
     return (
-      <VerticalScroller className='guild-profile' fade={true}>
+      <AdvancedScrollerThin className='guild-profile' fade={true}>
         <Flex justify={Flex.Justify.START} wrap={Flex.Wrap.WRAP}>
           <Section title={Messages.GUILD_OWNER}>
             {owner ? (
@@ -281,7 +279,7 @@ class GuildInfo extends React.PureComponent {
             {guild.premiumTier}
           </Section>
         </Flex>
-      </VerticalScroller>
+      </AdvancedScrollerThin>
     );
   }
 }
