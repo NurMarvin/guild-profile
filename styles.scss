@@ -14,6 +14,7 @@
 
 .guild-profile {
   padding: 20px 10px;
+  height: 100%;
 }
 
 .theme-dark {
@@ -68,7 +69,7 @@
   .profile-badge-more-emoji {
     background-image: url('https://raw.githubusercontent.com/NurMarvin/guild-profile/master/assets/dark/more-emoji.svg');
   }
-  
+
   .profile-badge-relay-enabled {
     background-image: url('https://raw.githubusercontent.com/NurMarvin/guild-profile/master/assets/dark/relay-enabled.svg');
   }
