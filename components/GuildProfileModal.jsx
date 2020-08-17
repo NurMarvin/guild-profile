@@ -18,6 +18,7 @@ const {
   Tooltip,
   Spinner,
 } = require('powercord/components');
+const { close } = require('powercord/modal');
 const { clipboard } = window.require('electron');
 const AsyncComponent = require('powercord/components/AsyncComponent');
 
@@ -144,6 +145,7 @@ class Relationships extends React.PureComponent {
   }
 
   handleSelect(userId) {
+    close();
     UserProfileModalActionCreators.open(userId);
   }
 
