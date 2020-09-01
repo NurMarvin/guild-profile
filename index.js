@@ -7,6 +7,7 @@ const { Plugin } = require('powercord/entities');
 const { inject, uninject } = require('powercord/injector');
 const { React, getModule, FluxDispatcher, i18n: { Messages } } = require('powercord/webpack');
 const { open } = require('powercord/modal');
+const { findInReactTree } = require('powercord/util')
 const i18n = require('./i18n');
 
 const GuildProfileModal = require('./components/GuildProfileModal');
@@ -63,7 +64,7 @@ module.exports = class GuildProfile extends Plugin {
   }
 
   async _injectMenu() {
-    const key = 'guild-profile';
+    const id = 'guild-profile';
     const Menu = await getModule(['MenuItem']);
     const { getGuild } = await getModule(['getGuild']);
     const { getGuildId } = await getModule(['getLastSelectedGuildId']);
@@ -75,24 +76,13 @@ module.exports = class GuildProfile extends Plugin {
     inject('guild-profile-menu', Menu, 'default', ([{ children }], res) => {
       if (res.props.id !== 'guild-header-popout') return res;
 
-      if (!children.some(group => {
-        if (!group) return false;
-        const groupChildren = group.props.children;
-
-        if (typeof groupChildren === 'array') {
-          return groupChildren.some(item => item.key === key)
-        } else {
-          return groupChildren.key === key;
-        }
-      })) {
+      if (!findInReactTree(res, c => c.props && c.props.id == id)) {
         children.unshift(
-          React.createElement(Menu.MenuGroup, {},
-            React.createElement(Menu.MenuItem, {
-              key,
+          React.createElement(Menu.MenuGroup, null, React.createElement(Menu.MenuItem, {
+              id,
               label: Messages.GUILD_PROFILE,
               action: () => open(() => React.createElement(GuildProfileModal, { guild: getGuild(getGuildId()), section: 'GUILD_INFO', requestMemberData }))
-            })
-          )
+          }))
         );
       }
       return res;
