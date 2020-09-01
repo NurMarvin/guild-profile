@@ -76,6 +76,7 @@ module.exports = class GuildProfile extends Plugin {
       if (res.props.id !== 'guild-header-popout') return res;
 
       if (!children.some(group => {
+        if (!group) return false;
         const groupChildren = group.props.children;
 
         if (typeof groupChildren === 'array') {
