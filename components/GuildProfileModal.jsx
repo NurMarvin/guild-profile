@@ -354,7 +354,7 @@ class GuildProfileModal extends React.PureComponent {
     const guildIcon = (
       <GuildIcon
         animate={true}
-        className={`${this.classes.avatar} guild-icon-avatar-size`}
+        className={'guild-icon-avatar-size'}
         guild={guild}
       />
     );
@@ -375,6 +375,7 @@ class GuildProfileModal extends React.PureComponent {
               >
                 <Tooltip
                   position='top'
+                  className={this.classes.avatar}
                   text={Messages.CLICK_TO_COPY_SERVER_ICON_URL}
                 >
                   {guildIcon}
