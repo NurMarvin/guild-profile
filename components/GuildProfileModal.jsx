@@ -19,7 +19,7 @@ const {
   Spinner,
 } = require('powercord/components');
 const { close } = require('powercord/modal');
-const { clipboard } = window.require('electron');
+const { clipboard } = require('electron');
 const AsyncComponent = require('powercord/components/AsyncComponent');
 
 const { AdvancedScrollerThin } = getModule(['AdvancedScrollerThin'], false);
