@@ -123,5 +123,6 @@ module.exports = class GuildProfile extends Plugin {
   pluginWillUnload() {
     uninject('guild-profile-context-menu');
     uninject('guild-profile-menu');
+    FluxDispatcher.unsubscribe('GUILD_MEMBER_LIST_UPDATE', this.handleMemberListUpdate);
   }
 }
