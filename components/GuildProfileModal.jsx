@@ -307,8 +307,8 @@ class GuildProfileModal extends React.PureComponent {
   }
 
   async componentDidMount() {
-    const { guild, requestMemberData } = this.props;
-    const memberData = await requestMemberData(guild.id);
+    const { guild, getMemberCounts } = this.props;
+    const memberData = await getMemberCounts(guild.id);
     this.setState({ counts: memberData });
   }
 
@@ -418,8 +418,8 @@ class GuildProfileModal extends React.PureComponent {
                 <Text className={this.classes.guildDetail}>
                   {counts ? (
                     <InviteButton.Data
-                      members={counts.members}
-                      membersOnline={counts.membersOnline}
+                      members={counts.memberCount}
+                      membersOnline={counts.onlineCount}
                     />
                   ) : (
                     Messages.LOADING + '...'

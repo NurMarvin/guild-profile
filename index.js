@@ -12,6 +12,9 @@ const i18n = require('./i18n');
 
 const GuildProfileModal = require('./components/GuildProfileModal');
 
+const memberCountsStore = require('./memberCountsStore/store');
+const memberCountsActions = require('./memberCountsStore/actions');
+
 module.exports = class GuildProfile extends Plugin {
   async startPlugin() {
     this.log('Icons provided by https://iconify.design/');
@@ -19,20 +22,36 @@ module.exports = class GuildProfile extends Plugin {
     this.loadStylesheet('styles.scss');
     this._injectContextMenu();
     this._injectMenu();
+
+    _.bindAll(this, ['handleMemberListUpdate']);
+
+    FluxDispatcher.subscribe('GUILD_MEMBER_LIST_UPDATE', this.handleMemberListUpdate);
   }
 
-  requestMemberData(guildId) {
-    return new Promise((resolve) => {
-      const { requestMembers } = getModule(['requestMembers'], false);
-      requestMembers(guildId);
+  handleMemberListUpdate(memberListUpdate) {
+    this.updateMemberCounts(memberListUpdate);
+  }
 
-      function onReceived(e) {
-        if (e.guildId === guildId) {
-          let membersOnline = e.groups.map(group => group.id != "offline" ? group.count : 0).reduce((a, b) => {
-            return a + b;
-          }, 0);
-          resolve({ members: e.memberCount, membersOnline });
-          FluxDispatcher.unsubscribe('GUILD_MEMBER_LIST_UPDATE', onReceived);
+  getMemberCounts(id) {
+    return new Promise((resolve) => {
+      const memberCounts = memberCountsStore.getMemberCounts(id);
+
+      // If the member count is in the Flux store just send that data 
+      if (memberCounts) {
+        resolve(memberCounts);
+        return;
+      }
+
+      const { requestMembers } = getModule(['requestMembers'], false);
+      requestMembers(id);
+
+      const updateMemberCounts = (memberListUpdate) => {
+        return this.updateMemberCounts(memberListUpdate);
+      }
+
+      function onReceived(memberListUpdate) {
+        if (memberListUpdate.guildId === id) {
+          resolve(updateMemberCounts(memberListUpdate));
         }
       }
 
@@ -40,12 +59,23 @@ module.exports = class GuildProfile extends Plugin {
     });
   }
 
+  updateMemberCounts(memberListUpdate) {
+    const { guildId, memberCount, groups } = memberListUpdate;
+    const onlineCount = groups.map(group => group.id != "offline" ? group.count : 0).reduce((a, b) => {
+      return a + b;
+    }, 0);
+    const memberCounts = { guildId, memberCount, onlineCount };
+
+    memberCountsActions.updateMemberCounts(memberCounts);
+    return memberCounts;
+  }
+
   async _injectContextMenu() {
     const { MenuGroup, MenuItem } = await getModule(['MenuItem']);
     const GuildContextMenu = await getModule(m => m.default && m.default.displayName === 'GuildContextMenu');
 
-    const requestMemberData = (guildId) => {
-      return this.requestMemberData(guildId);
+    const getMemberCounts = (guildId) => {
+      return this.getMemberCounts(guildId);
     }
 
     inject('guild-profile-context-menu', GuildContextMenu, 'default', ([{ guild }], res) => {
@@ -54,7 +84,7 @@ module.exports = class GuildProfile extends Plugin {
           React.createElement(MenuItem, {
             key: 'guild-profile',
             label: Messages.GUILD_PROFILE,
-            action: () => open(() => React.createElement(GuildProfileModal, { guild, section: 'GUILD_INFO', requestMemberData }))
+            action: () => open(() => React.createElement(GuildProfileModal, { guild, section: 'GUILD_INFO', getMemberCounts }))
           })
         )
       );
@@ -69,8 +99,8 @@ module.exports = class GuildProfile extends Plugin {
     const { getGuild } = await getModule(['getGuild']);
     const { getGuildId } = await getModule(['getLastSelectedGuildId']);
 
-    const requestMemberData = (guildId) => {
-      return this.requestMemberData(guildId);
+    const getMemberCounts = (guildId) => {
+      return this.getMemberCounts(guildId);
     }
 
     inject('guild-profile-menu', Menu, 'default', ([{ children }], res) => {
@@ -79,9 +109,9 @@ module.exports = class GuildProfile extends Plugin {
       if (!findInReactTree(res, c => c.props && c.props.id == id)) {
         children.unshift(
           React.createElement(Menu.MenuGroup, null, React.createElement(Menu.MenuItem, {
-              id,
-              label: Messages.GUILD_PROFILE,
-              action: () => open(() => React.createElement(GuildProfileModal, { guild: getGuild(getGuildId()), section: 'GUILD_INFO', requestMemberData }))
+            id,
+            label: Messages.GUILD_PROFILE,
+            action: () => open(() => React.createElement(GuildProfileModal, { guild: getGuild(getGuildId()), section: 'GUILD_INFO', getMemberCounts }))
           }))
         );
       }
