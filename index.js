@@ -11,6 +11,7 @@ const { findInReactTree } = require('powercord/util')
 const i18n = require('./i18n');
 
 const GuildProfileModal = require('./components/GuildProfileModal');
+const GuildProfileIcon = require('./components/GuildProfileIcon');
 
 const memberCountsStore = require('./memberCountsStore/store');
 const memberCountsActions = require('./memberCountsStore/actions');
@@ -112,6 +113,7 @@ module.exports = class GuildProfile extends Plugin {
           React.createElement(Menu.MenuGroup, null, React.createElement(Menu.MenuItem, {
             id,
             label: Messages.GUILD_PROFILE,
+            icon: () => React.createElement(GuildProfileIcon),
             action: () => open(() => React.createElement(GuildProfileModal, { guild: getGuild(getGuildId()), section: 'GUILD_INFO', getMemberCounts }))
           }))
         );
