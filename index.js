@@ -82,6 +82,7 @@ module.exports = class GuildProfile extends Plugin {
       res.props.children.splice(0, 0,
         React.createElement(MenuGroup, {},
           React.createElement(MenuItem, {
+            id: 'guild-profile',
             key: 'guild-profile',
             label: Messages.GUILD_PROFILE,
             action: () => open(() => React.createElement(GuildProfileModal, { guild, section: 'GUILD_INFO', getMemberCounts }))
