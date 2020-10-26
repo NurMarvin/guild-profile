@@ -297,6 +297,7 @@ class GuildProfileModal extends React.PureComponent {
         .guildIconContainer,
       avatarWrapperNormal: getModule(['avatarWrapperNormal'], false)
         .avatarWrapperNormal,
+      ...getModule(['profileBadge'], false),
     };
 
     _.bindAll(this, ['handleSectionSelect']);

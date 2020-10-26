@@ -4,7 +4,6 @@
  */
 
 const { React, getModule } = require('powercord/webpack');
-
 const { icon } = getModule(['iconContainer', 'icon'], false);
 
 module.exports = React.memo((props) => (
