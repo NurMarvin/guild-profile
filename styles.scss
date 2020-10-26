@@ -74,6 +74,14 @@
   .profile-badge-relay-enabled {
     background-image: url('https://raw.githubusercontent.com/NurMarvin/guild-profile/master/assets/dark/relay-enabled.svg');
   }
+
+  .profile-badge-preview-enabled {
+    background-image: url('https://raw.githubusercontent.com/NurMarvin/guild-profile/master/assets/dark/preview-enabled.svg');
+  }
+
+  .profile-badge-member-verification-gate-enabled {
+    background-image: url('https://raw.githubusercontent.com/NurMarvin/guild-profile/master/assets/dark/member-verification-gate-enabled.svg');
+  }
 }
 
 .theme-light {
@@ -131,5 +139,13 @@
 
   .profile-badge-relay-enabled {
     background-image: url('https://raw.githubusercontent.com/NurMarvin/guild-profile/master/assets/light/relay-enabled.svg');
+  }
+
+  .profile-badge-preview-enabled {
+    background-image: url('https://raw.githubusercontent.com/NurMarvin/guild-profile/master/assets/light/preview-enabled.svg');
+  }
+
+  .profile-badge-member-verification-gate-enabled {
+    background-image: url('https://raw.githubusercontent.com/NurMarvin/guild-profile/master/assets/light/member-verification-gate-enabled.svg');
   }
 }
