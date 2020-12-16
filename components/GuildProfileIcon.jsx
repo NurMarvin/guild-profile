@@ -4,7 +4,7 @@
  */
 
 const { React, getModule } = require('powercord/webpack');
-const { icon } = getModule(['iconContainer', 'icon'], false);
+const { icon } = getModule(['menu', 'icon'], false);
 
 module.exports = React.memo((props) => (
   <svg
