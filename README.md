@@ -2,6 +2,9 @@
 
 Open a guild profile modal that gives you various information about the guild.
 
+## Support Server (NEW)
+Need help with the plugin? Feel free to drop into the [support server](https://nurmarv.in/support) and ask for help!
+
 ## Preview
 
 ![Preview Image](https://i.imgur.com/C4nLf2Q.png)
