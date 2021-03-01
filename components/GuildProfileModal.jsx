@@ -139,8 +139,8 @@ class Relationships extends React.PureComponent {
     this.classes = {
       empty: getModule(['body', 'empty'], false).empty,
       nelly: getModule(['flexWrapper', 'image'], false).image,
-      ...getModule(['emptyIcon'], false),
-      ...getModule(['fade', 'thin'], false),
+      ...getModule(['emptyIconFriends'], false),
+      ...getModule(['scrollerBase', 'fade', 'thin'], false),
     };
   }
 
