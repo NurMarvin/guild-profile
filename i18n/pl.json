@@ -22,5 +22,6 @@
   "NO_FRIENDS_IN_THIS_GUILD": "Brak znajomych na tym serwerze",
   "NO_BLOCKED_USERS_IN_THIS_GUILD": "Brak zablokowanych użytkowników na tym serwerze",
   "GUILD_PREMIUM_SUBSCRIBER_COUNT": "Ilość osób ulepszających serwer",
-  "GUILD_PREMIUM_TIER": "Poziom ulepszenia serwera"
+  "GUILD_PREMIUM_TIER": "Poziom ulepszenia serwera",
+  "PREFERRED_LOCALE": "Preferowane umiejscowienie"
 }
