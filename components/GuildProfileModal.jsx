@@ -211,6 +211,7 @@ class GuildInfo extends React.PureComponent {
   }
 
   handleContextMenu (event) {
+    // eslint-disable-next-line no-empty-function
     ContextMenu.openContextMenu(event, () => {});
   }
 
@@ -306,6 +307,7 @@ class GuildProfileModal extends React.PureComponent {
       ...getModule([ 'profileBadge' ], false)
     };
 
+    // eslint-disable-next-line no-undef
     _.bindAll(this, [ 'handleSectionSelect' ]);
 
     this.state = {
