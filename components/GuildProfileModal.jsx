@@ -287,6 +287,9 @@ class GuildInfo extends React.PureComponent {
           <Section title={Messages.PREFERRED_LOCALE}>
             {guild.preferredLocale}
           </Section>
+          <Section title={Messages.NSFW}>
+            {guild.nsfw ? Messages.YES : Messages.NO}
+          </Section>
         </Flex>
       </AdvancedScrollerThin>
     );

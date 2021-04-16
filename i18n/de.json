@@ -26,5 +26,8 @@
   "NO_FRIENDS_IN_THIS_GUILD": "Keine Freunde in diesem Server",
   "NO_BLOCKED_USERS_IN_THIS_GUILD": "Keine blockierten Nutzer in diesem Server",
   "GUILD_PREMIUM_SUBSCRIBER_COUNT": "Anzahl der Server Booster",
-  "GUILD_PREMIUM_TIER": "Server Boost Level"
+  "GUILD_PREMIUM_TIER": "Server Boost Level",
+  "NSFW": "Nicht sicher für die Arbeit (NSFW)/Auf iOS gesperrt",
+  "YES": "Ja",
+  "NO": "Nein"
 }

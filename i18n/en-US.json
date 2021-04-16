@@ -27,5 +27,8 @@
   "NO_BLOCKED_USERS_IN_THIS_GUILD": "No blocked users in this server",
   "GUILD_PREMIUM_SUBSCRIBER_COUNT": "Server Booster Count",
   "GUILD_PREMIUM_TIER": "Server Boost Level",
-  "PREFERRED_LOCALE": "Preferred Locale"
+  "PREFERRED_LOCALE": "Preferred Locale",
+  "NSFW": "Not Safe For Work (NSFW)/Banned on iOS",
+  "YES": "Yes",
+  "NO": "No"
 }
