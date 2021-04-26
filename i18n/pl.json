@@ -18,10 +18,17 @@
   "NEWS": "Kanały ogłoszeń",
   "FEATURABLE": "Featurable",
   "VIP_REGIONS": "Regiony VIP",
+  "MORE_EMOJI": "Więcej emoji",
+  "RELAY_ENABLED": "Włączona retransmisja",
+  "PREVIEW_ENABLED": "Włączony przegląd",
+  "MEMBER_VERIFICATION_GATE_ENABLED": "Włączone sprawdzanie członków",
   "CLICK_TO_COPY_SERVER_ICON_URL": "Kliknij aby skopiować URL ikony serwera",
   "NO_FRIENDS_IN_THIS_GUILD": "Brak znajomych na tym serwerze",
   "NO_BLOCKED_USERS_IN_THIS_GUILD": "Brak zablokowanych użytkowników na tym serwerze",
   "GUILD_PREMIUM_SUBSCRIBER_COUNT": "Ilość osób ulepszających serwer",
   "GUILD_PREMIUM_TIER": "Poziom ulepszenia serwera",
-  "PREFERRED_LOCALE": "Preferowane umiejscowienie"
+  "PREFERRED_LOCALE": "Preferowane umiejscowienie",
+  "NSFW": "Not Safe For Work (NSFW)/Zbanowane na iOS",
+  "YES": "Tak",
+  "NO": "Nie"
 }
