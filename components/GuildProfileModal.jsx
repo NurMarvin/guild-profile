@@ -298,13 +298,15 @@ class GuildProfileModal extends React.PureComponent {
   constructor(props) {
     super(props);
 
+    const { wrapper, pointer } = getModule(['avatar', 'wrapper'], false);
+
     this.classes = {
       ...getModule(['guildDetail'], false),
       ...getModule(['tabBarContainer'], false),
       guildIconContainer: getModule(['guildIconContainer'], false)
         .guildIconContainer,
-      avatarWrapperNormal: getModule(['avatarWrapperNormal'], false)
-        .avatarWrapperNormal,
+      wrapper,
+      pointer,
       ...getModule(['profileBadge'], false),
     };
 
@@ -373,7 +375,7 @@ class GuildProfileModal extends React.PureComponent {
           <header className={this.classes.header}>
             {guild.icon ? (
               <Clickable
-                className={this.classes.avatarWrapperNormal}
+                className={[this.classes.wrapper, this.classes.pointer]}
                 onClick={() => {
                   const iconExt = icon.startsWith('a_') ? 'gif' : 'png';
                   clipboard.writeText(
