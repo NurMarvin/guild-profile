@@ -39,7 +39,7 @@ getModuleByDisplayName('InviteButton', true, true).then((Button) => {
 const DiscordTag = AsyncComponent.from(getModuleByDisplayName('DiscordTag'));
 
 const { GuildIcon } = getModule(['GuildIcon'], false);
-const { Avatar } = getModule(['Avatar'], false);
+const { default: Avatar } = getModule(['AnimatedAvatar'], false);
 
 const UserProfileModalActionCreators = getModule(
   ['fetchProfile', 'open'],
@@ -120,7 +120,7 @@ class RelationshipRow extends React.PureComponent {
       >
         <Avatar
           className={this.classes.listAvatar}
-          src={user.avatarURL}
+          src={user.getAvatarURL()}
           size='SIZE_40'
           status={status}
         />
