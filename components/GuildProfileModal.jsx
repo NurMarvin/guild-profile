@@ -139,7 +139,8 @@ class Relationships extends React.PureComponent {
     super(props);
 
     this.classes = {
-      empty: getModule(['body', 'empty'], false).empty,
+      // Discord broke this
+      // empty: getModule(['body', 'empty'], false).empty,
       nelly: getModule(['flexWrapper', 'image'], false).image,
       ...getModule(['emptyIconFriends'], false),
       ...getModule(['scrollerBase', 'fade', 'thin'], false),
@@ -192,7 +193,8 @@ class GuildInfo extends React.PureComponent {
     super(props);
 
     this.classes = {
-      empty: getModule(['body', 'empty'], false).empty,
+      // Discord somehow managed to break this
+      // empty: getModule(['body', 'empty'], false).empty,
       nelly: getModule(['flexWrapper', 'image'], false).image,
       ...getModule(['emptyIcon', 'emptyText'], false),
     };
@@ -371,7 +373,7 @@ class GuildProfileModal extends React.PureComponent {
 
     return (
       <Flex className={this.classes.root} direction={Flex.Direction.VERTICAL}>
-        <div className={this.classes.topSectionNormal}>
+        <div className={this.classes.topSection}>
           <header className={this.classes.header}>
             {guild.icon ? (
               <Clickable
