@@ -32,5 +32,5 @@
   "NSFW": "Not Safe For Work (NSFW)/Banned on iOS",
   "YES": "Yes",
   "NO": "No",
-  "EXPERIMENTS": "Experiments"
+  "ENABLED_EXPERIMENTS": "Enabled Experiments"
 }
