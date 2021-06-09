@@ -52,6 +52,7 @@ const GuildProfileSections = {
   GUILD_INFO: 'GUILD_INFO',
   FRIENDS: 'FRIENDS',
   BLOCKED_USERS: 'BLOCKED_USERS',
+  EXPERIMENTS: 'EXPERIMENTS'
 };
 
 const GuildExplicitContentFilterTypes = [
@@ -185,6 +186,105 @@ class Relationships extends React.PureComponent {
         ))}
       </AdvancedScrollerThin>
     );
+  }
+}
+
+
+class ExperimentInfo extends React.PureComponent {
+  constructor(props) {
+    super(props);
+
+    this.classes = {
+      ...getModule(['listRow'], false),
+      // Discord somehow managed to break this
+      // empty: getModule(['body', 'empty'], false).empty,
+      nelly: getModule(['flexWrapper', 'image'], false).image,
+      ...getModule(['emptyIcon', 'emptyText'], false),
+      
+    };
+
+    this.state = {
+      streamerMode: getModule(['hidePersonalInformation'], false)
+        .hidePersonalInformation,
+    };
+  }
+
+  async componentDidMount() {
+    const getModulesByKeyword = (keyword, exact = false) => {
+      return require('powercord/webpack').getAllModules(module => {
+        const modules = [ ...Object.keys(module), ...Object.keys(module.__proto__) ];
+        for (const mdl of modules) {
+          if (exact) { if (mdl === keyword) return true; }
+          else { if (mdl.toLowerCase().indexOf(keyword.toLowerCase()) > -1) return true; }
+        }
+        return false;
+      });
+    }
+
+    console.log(this.props.guild)
+    const loadedGuildExperiments = getModulesByKeyword("getSerializedState")[0].getSerializedState().loadedGuildExperiments
+    const murmurhash = getModulesByKeyword("v3")[1];
+    const registeredExperiments = getModulesByKeyword("getRegisteredExperiments")[0].getRegisteredExperiments()
+    const g={...loadedGuildExperiments}
+    const o = {}
+    Object.keys(registeredExperiments).forEach(n=>o[murmurhash(n)]=n)
+    Object.entries(loadedGuildExperiments).forEach(([key,value])=>g[o[key]]={...value,hashKey:key})
+    const realLoadedGuildExpsKeys = Object.keys(g).filter(k => g[k].hashKey!=null&&k!="undefined")
+    const realLoadedGuildExps = {}
+    const y = {}
+    Object.keys(o).forEach(key=>{y[o[key]]=key})
+    realLoadedGuildExpsKeys.forEach(k=>{realLoadedGuildExps[k]=g[y[k]]})
+
+    const { id } = this.props.guild;
+    const enabledExps = []
+
+    realLoadedGuildExpsKeys.forEach(k=>{
+      const d = realLoadedGuildExps[k]
+      if (d.overrides[id]!=undefined) {
+        enabledExps.push(k)
+      }
+    })
+    this.setState({ enabledExps: enabledExps });
+  }
+
+  render() {
+    const { getCurrentUser } = getModule(["getCurrentUser"], false);
+    const enabledExps = this.state.enabledExps;
+    const section = this.props.section
+    
+    if (!enabledExps) {
+      return (
+        <div className={this.classes.empty}>
+          <Spinner />
+        </div>
+      );
+    } else if (enabledExps.length < 1) {
+      return (
+        <div className={this.classes.empty}>
+          <div className={this.classes.emptyIconFriends} />
+          <div className={this.classes.emptyText}>
+            {Messages[`NO_${section}_IN_THIS_GUILD`]}
+          </div>
+        </div>
+      );
+    } else {
+      const currentUser = getCurrentUser();
+      console.log(currentUser, typeof currentUser)
+      return (
+        <AdvancedScrollerThin
+          className={[
+            this.classes.listScroller,
+            this.classes.fade,
+            this.classes.thin,
+            this.classes.scrollerBase,
+          ].join(' ')}
+        >
+          {enabledExps.map((Experiment) => (
+              <Text style={{color:"white",fontSize:"20px"}}>{Experiment}</Text>
+          ))}
+        </AdvancedScrollerThin>
+      )
+    }
   }
 }
 
@@ -349,6 +449,10 @@ class GuildProfileModal extends React.PureComponent {
         component = Relationships;
         props.relationships = this.props.blocked;
         break;
+      case GuildProfileSections.EXPERIMENTS:
+        component = ExperimentInfo;
+        props.guild = this.props.guild;
+        break;
       case GuildProfileSections.GUILD_INFO:
       default:
         component = GuildInfo;
@@ -468,6 +572,12 @@ class GuildProfileModal extends React.PureComponent {
                   id={GuildProfileSections.BLOCKED_USERS}
                 >
                   {Messages.BLOCKED_USERS_IN_GUILD}
+                </TabBar.Item>
+                <TabBar.Item
+                  className={this.classes.tabBarItem}
+                  id={GuildProfileSections.EXPERIMENTS}
+                >
+                  {Messages.EXPERIMENTS}
                 </TabBar.Item>
               </TabBar>
             </div>
