@@ -209,7 +209,46 @@ class GuildInfo extends React.PureComponent {
     const { getUser } = getModule(['getUser'], false);
     const { ownerId } = this.props.guild;
 
-    this.setState({ owner: await getUser(ownerId) });
+    const { getSerializedState } = await getModule(['getSerializedState']);
+    const { getRegisteredExperiments } = await getModule(['getRegisteredExperiments']);
+    const { v3: murmurHash } = await getModule(['v3']);
+
+    const { loadedGuildExperiments } = getSerializedState();
+    const registeredExperiments = getRegisteredExperiments();
+
+    const object = {};
+
+    Object.keys(registeredExperiments).forEach(
+      (experiment) => (object[murmurHash(experiment)] = experiment)
+    );
+    Object.entries(loadedGuildExperiments).forEach(
+      ([key, value]) =>
+        (loadedGuildExperiments[object[key]] = { ...value, hashKey: key })
+    );
+
+    const enabledExperiments = Object.keys(loadedGuildExperiments).filter(
+      (k) => loadedGuildExperiments[k].hashKey != null && k != 'undefined'
+    );
+    const enabledGuildExperiments = {};
+    const y = {};
+    Object.keys(object).forEach((key) => {
+      y[object[key]] = key;
+    });
+    enabledExperiments.forEach((k) => {
+      enabledGuildExperiments[k] = loadedGuildExperiments[y[k]];
+    });
+
+    const { id } = this.props.guild;
+    const experimentsEnabledForGuild = [];
+
+    enabledExperiments.forEach((k) => {
+      const d = enabledGuildExperiments[k];
+      if (d.overrides[id] != undefined) {
+        experimentsEnabledForGuild.push(k);
+      }
+    });
+
+    this.setState({ owner: await getUser(ownerId), experiments: experimentsEnabledForGuild });
   }
 
   handleContextMenu(event) {
@@ -227,7 +266,7 @@ class GuildInfo extends React.PureComponent {
       verificationLevel,
       explicitContentFilter,
     } = guild;
-    const { streamerMode, owner } = this.state;
+    const { streamerMode, owner, experiments } = this.state;
 
     if (streamerMode) {
       return (
@@ -289,6 +328,9 @@ class GuildInfo extends React.PureComponent {
           </Section>
           <Section title={Messages.NSFW}>
             {guild.nsfw ? Messages.YES : Messages.NO}
+          </Section>
+          <Section title={Messages.ENABLED_EXPERIMENTS}>
+            {experiments && experiments.length > 0 ? experiments.join(', ') : 'None'}
           </Section>
         </Flex>
       </AdvancedScrollerThin>

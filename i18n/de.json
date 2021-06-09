@@ -29,5 +29,6 @@
   "GUILD_PREMIUM_TIER": "Server Boost Level",
   "NSFW": "Nicht sicher für die Arbeit (NSFW)/Auf iOS gesperrt",
   "YES": "Ja",
-  "NO": "Nein"
+  "NO": "Nein",
+  "ENABLED_EXPERIMENTS": "Aktivierte Experimente"
 }

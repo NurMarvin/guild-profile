@@ -25,10 +25,12 @@
   "CLICK_TO_COPY_SERVER_ICON_URL": "Click to copy server icon URL",
   "NO_FRIENDS_IN_THIS_GUILD": "No friends in this server",
   "NO_BLOCKED_USERS_IN_THIS_GUILD": "No blocked users in this server",
+  "NO_EXPERIMENTS_IN_THIS_GUILD": "No enabled guild experiments in this server",
   "GUILD_PREMIUM_SUBSCRIBER_COUNT": "Server Booster Count",
   "GUILD_PREMIUM_TIER": "Server Boost Level",
   "PREFERRED_LOCALE": "Preferred Locale",
   "NSFW": "Not Safe For Work (NSFW)/Banned on iOS",
   "YES": "Yes",
-  "NO": "No"
+  "NO": "No",
+  "ENABLED_EXPERIMENTS": "Enabled Experiments"
 }
