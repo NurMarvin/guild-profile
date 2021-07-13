@@ -1,13 +1,18 @@
 /*
- * Copyright (c) 2020 NurMarvin (Marvin Witt)
+ * Copyright (c) 2020 - 2021 NurMarvin (Marvin Witt)
  * Licensed under the Open Software License version 3.0
  */
 
 const { Plugin } = require('powercord/entities');
 const { inject, uninject } = require('powercord/injector');
-const { React, getModule, FluxDispatcher, i18n: { Messages } } = require('powercord/webpack');
+const {
+  React,
+  getModule,
+  FluxDispatcher,
+  i18n: { Messages },
+} = require('powercord/webpack');
 const { open } = require('powercord/modal');
-const { findInReactTree } = require('powercord/util')
+const { findInReactTree } = require('powercord/util');
 const i18n = require('./i18n');
 
 const GuildProfileModal = require('./components/GuildProfileModal');
@@ -26,7 +31,10 @@ module.exports = class GuildProfile extends Plugin {
 
     _.bindAll(this, ['handleMemberListUpdate']);
 
-    FluxDispatcher.subscribe('GUILD_MEMBER_LIST_UPDATE', this.handleMemberListUpdate);
+    FluxDispatcher.subscribe(
+      'GUILD_MEMBER_LIST_UPDATE',
+      this.handleMemberListUpdate
+    );
   }
 
   handleMemberListUpdate(memberListUpdate) {
@@ -37,7 +45,7 @@ module.exports = class GuildProfile extends Plugin {
     return new Promise((resolve) => {
       const memberCounts = memberCountsStore.getMemberCounts(id);
 
-      // If the member count is in the Flux store just send that data 
+      // If the member count is in the Flux store just send that data
       if (memberCounts) {
         resolve(memberCounts);
         return;
@@ -48,7 +56,7 @@ module.exports = class GuildProfile extends Plugin {
 
       const updateMemberCounts = (memberListUpdate) => {
         return this.updateMemberCounts(memberListUpdate);
-      }
+      };
 
       function onReceived(memberListUpdate) {
         if (memberListUpdate.guildId === id) {
@@ -62,9 +70,11 @@ module.exports = class GuildProfile extends Plugin {
 
   updateMemberCounts(memberListUpdate) {
     const { guildId, memberCount, groups } = memberListUpdate;
-    const onlineCount = groups.map(group => group.id != "offline" ? group.count : 0).reduce((a, b) => {
-      return a + b;
-    }, 0);
+    const onlineCount = groups
+      .map((group) => (group.id != 'offline' ? group.count : 0))
+      .reduce((a, b) => {
+        return a + b;
+      }, 0);
     const memberCounts = { guildId, memberCount, onlineCount };
 
     memberCountsActions.updateMemberCounts(memberCounts);
@@ -73,25 +83,43 @@ module.exports = class GuildProfile extends Plugin {
 
   async _injectContextMenu() {
     const { MenuGroup, MenuItem } = await getModule(['MenuItem']);
-    const GuildContextMenu = await getModule(m => m.default && m.default.displayName === 'GuildContextMenu');
+    const GuildContextMenu = await getModule(
+      (m) => m.default && m.default.displayName === 'GuildContextMenu'
+    );
 
     const getMemberCounts = (guildId) => {
       return this.getMemberCounts(guildId);
-    }
+    };
 
-    inject('guild-profile-context-menu', GuildContextMenu, 'default', ([{ guild }], res) => {
-      res.props.children.splice(0, 0,
-        React.createElement(MenuGroup, {},
-          React.createElement(MenuItem, {
-            id: 'guild-profile',
-            key: 'guild-profile',
-            label: Messages.GUILD_PROFILE,
-            action: () => open(() => React.createElement(GuildProfileModal, { guild, section: 'GUILD_INFO', getMemberCounts }))
-          })
-        )
-      );
-      return res;
-    });
+    inject(
+      'guild-profile-context-menu',
+      GuildContextMenu,
+      'default',
+      ([{ guild }], res) => {
+        res.props.children.splice(
+          0,
+          0,
+          React.createElement(
+            MenuGroup,
+            {},
+            React.createElement(MenuItem, {
+              id: 'guild-profile',
+              key: 'guild-profile',
+              label: Messages.GUILD_PROFILE,
+              action: () =>
+                open(() =>
+                  React.createElement(GuildProfileModal, {
+                    guild,
+                    section: 'GUILD_INFO',
+                    getMemberCounts,
+                  })
+                ),
+            })
+          )
+        );
+        return res;
+      }
+    );
     GuildContextMenu.default.displayName = 'GuildContextMenu';
   }
 
@@ -103,19 +131,30 @@ module.exports = class GuildProfile extends Plugin {
 
     const getMemberCounts = (guildId) => {
       return this.getMemberCounts(guildId);
-    }
+    };
 
     inject('guild-profile-menu', Menu, 'default', ([{ children }], res) => {
-      if (res.props.id !== 'guild-header-popout') return res;
+      if (res.props.children.props.id !== 'guild-header-popout') return res;
 
-      if (!findInReactTree(res, c => c.props && c.props.id == id)) {
+      if (!findInReactTree(res, (c) => c.props && c.props.id == id)) {
         children.unshift(
-          React.createElement(Menu.MenuGroup, null, React.createElement(Menu.MenuItem, {
-            id,
-            label: Messages.GUILD_PROFILE,
-            icon: () => React.createElement(GuildProfileIcon),
-            action: () => open(() => React.createElement(GuildProfileModal, { guild: getGuild(getGuildId()), section: 'GUILD_INFO', getMemberCounts }))
-          }))
+          React.createElement(
+            Menu.MenuGroup,
+            null,
+            React.createElement(Menu.MenuItem, {
+              id,
+              label: Messages.GUILD_PROFILE,
+              icon: () => React.createElement(GuildProfileIcon),
+              action: () =>
+                open(() =>
+                  React.createElement(GuildProfileModal, {
+                    guild: getGuild(getGuildId()),
+                    section: 'GUILD_INFO',
+                    getMemberCounts,
+                  })
+                ),
+            })
+          )
         );
       }
       return res;
@@ -126,6 +165,9 @@ module.exports = class GuildProfile extends Plugin {
   pluginWillUnload() {
     uninject('guild-profile-context-menu');
     uninject('guild-profile-menu');
-    FluxDispatcher.unsubscribe('GUILD_MEMBER_LIST_UPDATE', this.handleMemberListUpdate);
+    FluxDispatcher.unsubscribe(
+      'GUILD_MEMBER_LIST_UPDATE',
+      this.handleMemberListUpdate
+    );
   }
-}
+};

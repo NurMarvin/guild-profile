@@ -1,13 +1,7 @@
 /*
- * Copyright (c) 2020 NurMarvin (Marvin Witt)
+ * Copyright (c) 2020 - 2021 NurMarvin (Marvin Witt)
  * Licensed under the Open Software License version 3.0
  */
-
-.guild-icon-avatar-size {
-  width: 80px;
-  height: 80px;
-  margin-right: 0;
-}
 
 .guild-info-section {
   padding: 5px 10px;
@@ -18,134 +12,11 @@
   height: 100%;
 }
 
-.theme-dark {
-  .profile-badge-news {
-    background-image: url('https://raw.githubusercontent.com/NurMarvin/guild-profile/master/assets/dark/news.svg');
-  }
-
-  .profile-badge-animated-icon {
-    background-image: url('https://raw.githubusercontent.com/NurMarvin/guild-profile/master/assets/dark/animated-icon.svg');
-  }
-
-  .profile-badge-commerce {
-    background-image: url('https://raw.githubusercontent.com/NurMarvin/guild-profile/master/assets/dark/commerce.svg');
-  }
-
-  .profile-badge-community {
-    background-image: url('https://raw.githubusercontent.com/NurMarvin/guild-profile/master/assets/dark/community.svg');
-  }
-
-  .profile-badge-welcome-screen-enabled {
-    background-image: url('https://raw.githubusercontent.com/NurMarvin/guild-profile/master/assets/dark/welcome-screen-enabled.svg');
-  }
-
-  .profile-badge-invite-splash {
-    background-image: url('https://raw.githubusercontent.com/NurMarvin/guild-profile/master/assets/dark/invite-splash.svg');
-  }
-
-  .profile-badge-banner {
-    background-image: url('https://raw.githubusercontent.com/NurMarvin/guild-profile/master/assets/dark/banner.svg');
-  }
-
-  .profile-badge-discoverable {
-    background-image: url('https://raw.githubusercontent.com/NurMarvin/guild-profile/master/assets/dark/discoverable.svg');
-  }
-
-  .profile-badge-vanity-url {
-    background-image: url('https://raw.githubusercontent.com/NurMarvin/guild-profile/master/assets/dark/vanity-url.svg');
-  }
-
-  .profile-badge-enabled-discoverable-before {
-    background-image: url('https://raw.githubusercontent.com/NurMarvin/guild-profile/master/assets/dark/enabled-discoverable-before.svg');
-  }
-
-  .profile-badge-featurable {
-    background-image: url('https://raw.githubusercontent.com/NurMarvin/guild-profile/master/assets/dark/featurable.svg');
-  }
-
-  .profile-badge-vip-regions {
-    background-image: url('https://raw.githubusercontent.com/NurMarvin/guild-profile/master/assets/dark/vip-regions.svg');
-  }
-
-  .profile-badge-more-emoji {
-    background-image: url('https://raw.githubusercontent.com/NurMarvin/guild-profile/master/assets/dark/more-emoji.svg');
-  }
-
-  .profile-badge-relay-enabled {
-    background-image: url('https://raw.githubusercontent.com/NurMarvin/guild-profile/master/assets/dark/relay-enabled.svg');
-  }
-
-  .profile-badge-preview-enabled {
-    background-image: url('https://raw.githubusercontent.com/NurMarvin/guild-profile/master/assets/dark/preview-enabled.svg');
-  }
-
-  .profile-badge-member-verification-gate-enabled {
-    background-image: url('https://raw.githubusercontent.com/NurMarvin/guild-profile/master/assets/dark/member-verification-gate-enabled.svg');
-  }
-}
-
-.theme-light {
-  .profile-badge-news {
-    background-image: url('https://raw.githubusercontent.com/NurMarvin/guild-profile/master/assets/light/news.svg');
-  }
-
-  .profile-badge-animated-icon {
-    background-image: url('https://raw.githubusercontent.com/NurMarvin/guild-profile/master/assets/light/animated-icon.svg');
-  }
-
-  .profile-badge-commerce {
-    background-image: url('https://raw.githubusercontent.com/NurMarvin/guild-profile/master/assets/light/commerce.svg');
-  }
-
-  .profile-badge-community {
-    background-image: url('https://raw.githubusercontent.com/NurMarvin/guild-profile/master/assets/light/community.svg');
-  }
-
-  .profile-badge-welcome-screen-enabled {
-    background-image: url('https://raw.githubusercontent.com/NurMarvin/guild-profile/master/assets/light/welcome-screen-enabled.svg');
-  }
-
-  .profile-badge-invite-splash {
-    background-image: url('https://raw.githubusercontent.com/NurMarvin/guild-profile/master/assets/light/invite-splash.svg');
-  }
-
-  .profile-badge-banner {
-    background-image: url('https://raw.githubusercontent.com/NurMarvin/guild-profile/master/assets/light/banner.svg');
-  }
-
-  .profile-badge-discoverable {
-    background-image: url('https://raw.githubusercontent.com/NurMarvin/guild-profile/master/assets/light/discoverable.svg');
-  }
-
-  .profile-badge-vanity-url {
-    background-image: url('https://raw.githubusercontent.com/NurMarvin/guild-profile/master/assets/light/vanity-url.svg');
-  }
-
-  .profile-badge-enabled-discoverable-before {
-    background-image: url('https://raw.githubusercontent.com/NurMarvin/guild-profile/master/assets/light/enabled-discoverable-before.svg');
-  }
-
-  .profile-badge-featurable {
-    background-image: url('https://raw.githubusercontent.com/NurMarvin/guild-profile/master/assets/light/featurable.svg');
-  }
-
-  .profile-badge-vip-regions {
-    background-image: url('https://raw.githubusercontent.com/NurMarvin/guild-profile/master/assets/light/vip-regions.svg');
-  }
-
-  .profile-badge-more-emoji {
-    background-image: url('https://raw.githubusercontent.com/NurMarvin/guild-profile/master/assets/light/more-emoji.svg');
-  }
-
-  .profile-badge-relay-enabled {
-    background-image: url('https://raw.githubusercontent.com/NurMarvin/guild-profile/master/assets/light/relay-enabled.svg');
-  }
-
-  .profile-badge-preview-enabled {
-    background-image: url('https://raw.githubusercontent.com/NurMarvin/guild-profile/master/assets/light/preview-enabled.svg');
-  }
-
-  .profile-badge-member-verification-gate-enabled {
-    background-image: url('https://raw.githubusercontent.com/NurMarvin/guild-profile/master/assets/light/member-verification-gate-enabled.svg');
-  }
+.guild-icon-acronym {
+  font-size: 2em;
+  text-align: center;
+  margin: auto;
+  color: var(--text-normal);
+  overflow: hidden;
+  width: 100%;
 }

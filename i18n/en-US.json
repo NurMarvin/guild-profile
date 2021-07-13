@@ -22,6 +22,9 @@
   "RELAY_ENABLED": "Relay Enabled",
   "PREVIEW_ENABLED": "Preview Enabled",
   "MEMBER_VERIFICATION_GATE_ENABLED": "Membership Gating Enabled",
+  "PRIVATE_THREADS": "Private Threads",
+  "THREE_DAY_THREAD_ARCHIVE": "Three Day Thread Archive",
+  "SEVEN_DAY_THREAD_ARCHIVE": "Seven Day Thread Archive",
   "CLICK_TO_COPY_SERVER_ICON_URL": "Click to copy server icon URL",
   "NO_FRIENDS_IN_THIS_GUILD": "No friends in this server",
   "NO_BLOCKED_USERS_IN_THIS_GUILD": "No blocked users in this server",
@@ -29,8 +32,12 @@
   "GUILD_PREMIUM_SUBSCRIBER_COUNT": "Server Booster Count",
   "GUILD_PREMIUM_TIER": "Server Boost Level",
   "PREFERRED_LOCALE": "Preferred Locale",
-  "NSFW": "Not Safe For Work (NSFW)/Banned on iOS",
-  "YES": "Yes",
-  "NO": "No",
-  "ENABLED_EXPERIMENTS": "Enabled Experiments"
+  "NSFW": "Not Safe For Work (NSFW) Level",
+  "NSFW_LEVEL_DEFAULT": "Default",
+  "NSFW_LEVEL_EXPLICIT": "Explicit",
+  "NSFW_LEVEL_SAFE": "Safe",
+  "NSFW_LEVEL_AGE_RESTRICTED": "Age Restricted",
+  "ENABLED_EXPERIMENTS": "Enabled Experiments",
+  "EXCLUSIVE_TO_SERVER_BANNER_FEATURE": "Exclusive to servers with the server banner feature",
+  "NONE": "None"
 }
