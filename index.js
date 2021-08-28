@@ -29,8 +29,8 @@ module.exports = class GuildProfile extends Plugin {
     this._injectContextMenu();
     this._injectMenu();
 
-    _.bindAll(this, ['handleMemberListUpdate']);
-
+    this.handleMemberListUpdate = this.handleMemberListUpdate.bind(this);
+    
     FluxDispatcher.subscribe(
       'GUILD_MEMBER_LIST_UPDATE',
       this.handleMemberListUpdate
