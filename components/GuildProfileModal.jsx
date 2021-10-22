@@ -133,7 +133,7 @@ class GuildProfileModal extends React.PureComponent {
 module.exports = Flux.connectStoresAsync(
   [
     getModule(['getRelationships']),
-    getModule(['getCurrentUser']),
+    getModule(['getCurrentUser', 'getUser']),
     getModule(['isMember']),
   ],
   ([relationshipsStore, userStore, membersStore], compProps) => {

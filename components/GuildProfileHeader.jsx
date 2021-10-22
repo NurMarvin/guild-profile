@@ -13,12 +13,11 @@ const {
 const { Text } = require('powercord/components');
 const AsyncComponent = require('powercord/components/AsyncComponent');
 
+const inviteModule = getModule((m) => m.displayName === 'InviteButton' && m.Header)
 const GuildBadge = AsyncComponent.from(getModuleByDisplayName('GuildBadge'));
-const InviteButton = AsyncComponent.from(
-  getModuleByDisplayName('InviteButton')
-);
+const InviteButton = AsyncComponent.from(inviteModule);
 
-getModuleByDisplayName('InviteButton', true, true).then((Button) => {
+inviteModule.then((Button) => {
   ['Data'].forEach((prop) => (InviteButton[prop] = Button[prop]));
 });
 
@@ -34,7 +33,7 @@ module.exports = class GuildProfileHeader extends React.PureComponent {
       ...getModule(['guildDetail'], false),
       ...getModule(['topSection'], false),
       ...getModule(['wrapper', 'pointer'], false),
-      ...getModule(['guildIconContainer'], false),
+      ...getModule(['guildIconContainer', 'guildBadge'], false),
       ...getModule(['headerTop', 'avatar', 'badgeList'], false),
     };
   }

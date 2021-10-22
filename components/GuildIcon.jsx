@@ -10,7 +10,7 @@ module.exports = class GuildIcon extends React.PureComponent {
     super(props);
 
     const { wrapper, avatar, avatarStack } = getModule(
-      ['avatar', 'wrapper'],
+      ['avatar', 'wrapper', 'avatarStack'],
       false
     );
 
