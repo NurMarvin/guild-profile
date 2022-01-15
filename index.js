@@ -8,6 +8,7 @@ const { inject, uninject } = require('powercord/injector');
 const {
   React,
   getModule,
+  getModuleByDisplayName,
   FluxDispatcher,
   i18n: { Messages },
 } = require('powercord/webpack');
@@ -26,11 +27,13 @@ module.exports = class GuildProfile extends Plugin {
     this.log('Icons provided by https://iconify.design/');
     powercord.api.i18n.loadAllStrings(i18n);
     this.loadStylesheet('styles.scss');
-    this._injectContextMenu();
+    this._injectOpenContextMenuLazy({
+      GuildContextMenu: this._injectContextMenu.bind(this)
+    })
     this._injectMenu();
 
     this.handleMemberListUpdate = this.handleMemberListUpdate.bind(this);
-    
+
     FluxDispatcher.subscribe(
       'GUILD_MEMBER_LIST_UPDATE',
       this.handleMemberListUpdate
@@ -81,10 +84,10 @@ module.exports = class GuildProfile extends Plugin {
     return memberCounts;
   }
 
-  async _injectContextMenu() {
-    const { MenuGroup, MenuItem } = await getModule(['MenuItem']);
-    const GuildContextMenu = await getModule(
-      (m) => m.default && m.default.displayName === 'GuildContextMenu'
+  _injectContextMenu() {
+    const { MenuGroup, MenuItem } = getModule(['MenuItem'], false);
+    const GuildContextMenu = getModule(
+      (m) => m.default && m.default.displayName === 'GuildContextMenu', false
     );
 
     const getMemberCounts = (guildId) => {
@@ -162,8 +165,39 @@ module.exports = class GuildProfile extends Plugin {
     Menu.default.displayName = 'Menu';
   }
 
+    _injectOpenContextMenuLazy (menus) {
+      const module = getModule([ 'openContextMenuLazy' ], false);
+
+        inject('guild-profile-context-lazy-menu', module, 'openContextMenuLazy', ([ event, lazyRender, params ]) => {
+            const warpLazyRender = async () => {
+                const render = await lazyRender(event);
+
+                return (config) => {
+                    const menu = render(config);
+                    const CMName = menu?.type?.displayName;
+
+                    if (CMName) {
+                        const moduleByDisplayName = getModuleByDisplayName(CMName, false);
+
+                        if (CMName in menus) {
+                            menus[CMName]();
+                            delete menus[CMName];
+                        }
+                        if (moduleByDisplayName !== null) {
+                            menu.type = moduleByDisplayName;
+                        }
+                    }
+                    return menu;
+                };
+            };
+
+            return [ event, warpLazyRender, params ];
+        }, true);
+    }
+
   pluginWillUnload() {
     uninject('guild-profile-context-menu');
+    uninject('guild-profile-context-lazy-menu');
     uninject('guild-profile-menu');
     FluxDispatcher.unsubscribe(
       'GUILD_MEMBER_LIST_UPDATE',
