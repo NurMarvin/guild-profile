@@ -22,6 +22,8 @@ const GuildProfileIcon = require('./components/GuildProfileIcon');
 const memberCountsStore = require('./memberCountsStore/store');
 const memberCountsActions = require('./memberCountsStore/actions');
 
+const { getCurrentUser } = getModule([ 'getCurrentUser' ], false);
+
 module.exports = class GuildProfile extends Plugin {
   async startPlugin() {
     this.log('Icons provided by https://iconify.design/');
@@ -29,7 +31,7 @@ module.exports = class GuildProfile extends Plugin {
     this.loadStylesheet('styles.scss');
     this._injectOpenContextMenuLazy({
       GuildContextMenu: this._injectContextMenu.bind(this)
-    })
+    });
     this._injectMenu();
 
     this.handleMemberListUpdate = this.handleMemberListUpdate.bind(this);
@@ -110,13 +112,13 @@ module.exports = class GuildProfile extends Plugin {
               key: 'guild-profile',
               label: Messages.GUILD_PROFILE,
               action: () =>
-                open(() =>
+                this._openModalHandler(() =>
                   React.createElement(GuildProfileModal, {
                     guild,
                     section: 'GUILD_INFO',
-                    getMemberCounts,
+                    getMemberCounts
                   })
-                ),
+                )
             })
           )
         );
@@ -149,13 +151,13 @@ module.exports = class GuildProfile extends Plugin {
               label: Messages.GUILD_PROFILE,
               icon: () => React.createElement(GuildProfileIcon),
               action: () =>
-                open(() =>
+                this._openModalHandler(() =>
                   React.createElement(GuildProfileModal, {
                     guild: getGuild(getGuildId()),
                     section: 'GUILD_INFO',
-                    getMemberCounts,
+                    getMemberCounts
                   })
-                ),
+                )
             })
           )
         );
@@ -165,39 +167,94 @@ module.exports = class GuildProfile extends Plugin {
     Menu.default.displayName = 'Menu';
   }
 
-    _injectOpenContextMenuLazy (menus) {
-      const module = getModule([ 'openContextMenuLazy' ], false);
+  _injectOpenContextMenuLazy (menus) {
+    const module = getModule([ 'openContextMenuLazy' ], false);
 
-        inject('guild-profile-context-lazy-menu', module, 'openContextMenuLazy', ([ event, lazyRender, params ]) => {
-            const warpLazyRender = async () => {
-                const render = await lazyRender(event);
+    inject('guild-profile-context-lazy-menu', module, 'openContextMenuLazy', ([ event, lazyRender, params ]) => {
+      const warpLazyRender = async () => {
+        const render = await lazyRender(event);
 
-                return (config) => {
-                    const menu = render(config);
-                    const CMName = menu?.type?.displayName;
+        return (config) => {
+          const menu = render(config);
+          const CMName = menu?.type?.displayName;
 
-                    if (CMName) {
-                        const moduleByDisplayName = getModuleByDisplayName(CMName, false);
+          if (CMName) {
+            const moduleByDisplayName = getModuleByDisplayName(CMName, false);
 
-                        if (CMName in menus) {
-                            menus[CMName]();
-                            delete menus[CMName];
-                        }
-                        if (moduleByDisplayName !== null) {
-                            menu.type = moduleByDisplayName;
-                        }
-                    }
-                    return menu;
-                };
-            };
+            if (CMName in menus) {
+              menus[CMName]();
+              delete menus[CMName];
+            }
+            if (moduleByDisplayName !== null) {
+              menu.type = moduleByDisplayName;
+            }
+          }
+          return menu;
+        };
+      };
 
-            return [ event, warpLazyRender, params ];
-        }, true);
+      return [ event, warpLazyRender, params ];
+    }, true);
+  }
+
+  _openModalHandler (element) {
+    const { openUserProfileModal } = getModule([ 'openUserProfileModal' ], false);
+    const module = getModule([ 'openModalLazy' ], false);
+
+    if (getModuleByDisplayName('UserProfileModal', false) !== null) {
+      open(element);
+      return;
     }
+
+    // So, the modules that are needed to render our modal are in another chunk, which is still not loaded.
+    // We call a function that loads modules for UserProfileModal,
+    // but the user will not see the final UserProfileModal -
+    // since it will be replaced at the last stage with our element
+
+    const { ModalRoot } = getModule([ 'ModalRoot' ], false);
+    const userId = getCurrentUser().id;
+
+    inject('guild-profile-open-modal-lazy', module, 'openModalLazy', ([ initLazyRender ]) => {
+      const warpInitLazyRender = () => {
+        const lazyRender = initLazyRender();
+
+        return new Promise(async (resolve) => {
+          const render = await lazyRender;
+
+          resolve((event) => {
+            const res = render(event);
+
+            if (res?.type?.displayName === 'UserProfileModal') {
+              const { props } = res;
+              const { root } = getModule([ 'root', 'body' ], false);
+
+              if (props.guildId === '@me' && props.user.id === userId) {
+                if (props.transitionState === 3) { // = close modal
+                  uninject('guild-profile-open-modal-lazy');
+                }
+
+                return React.createElement(ModalRoot, {
+                  transitionState: props.transitionState,
+                  className: root,
+                  children: element()
+                });
+              }
+            }
+            return res;
+          });
+        });
+      };
+
+      return [ warpInitLazyRender ];
+    }, true);
+
+    openUserProfileModal({ userId });
+  }
 
   pluginWillUnload() {
     uninject('guild-profile-context-menu');
     uninject('guild-profile-context-lazy-menu');
+    uninject('guild-profile-open-modal-lazy');
     uninject('guild-profile-menu');
     FluxDispatcher.unsubscribe(
       'GUILD_MEMBER_LIST_UPDATE',
