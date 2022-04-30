@@ -22,7 +22,7 @@ const GuildProfileIcon = require('./components/GuildProfileIcon');
 const memberCountsStore = require('./memberCountsStore/store');
 const memberCountsActions = require('./memberCountsStore/actions');
 
-const { getCurrentUser } = getModule([ 'getCurrentUser' ], false);
+const { getCurrentUser } = getModule(['getCurrentUser'], false);
 
 module.exports = class GuildProfile extends Plugin {
   async startPlugin() {
@@ -34,12 +34,41 @@ module.exports = class GuildProfile extends Plugin {
     });
     this._injectMenu();
 
+    this.lazyLoadClassModules.bind(this)();
+
     this.handleMemberListUpdate = this.handleMemberListUpdate.bind(this);
 
     FluxDispatcher.subscribe(
       'GUILD_MEMBER_LIST_UPDATE',
       this.handleMemberListUpdate
     );
+  }
+
+  lazyClasses = [
+    ['infoScroller'],
+    ['emptyIconFriends', 'empty'],
+    ['headerTop', 'avatar', 'badgeList'],
+    ['responsiveWidthMobile', 'topSection'],
+  ];
+
+  lazyLoadClassModules() {
+    const lazyClasses = this.lazyClasses.filter(props => !getModule(props, false));
+
+    // Powercord doesn't provide the full webpack require instance object sadly.
+    const req = webpackChunkdiscord_app.push([[Symbol()], [], _ => _]);
+
+    let modules = [];
+    for (const id in req.m) {
+      const module = req.m[id].toString();
+
+      for (const props of lazyClasses) {
+        if (props.every(p => ~module.indexOf(p))) {
+          modules.push(id);
+        }
+      }
+    }
+
+    modules.forEach(req);
   }
 
   handleMemberListUpdate(memberListUpdate) {
@@ -167,10 +196,10 @@ module.exports = class GuildProfile extends Plugin {
     Menu.default.displayName = 'Menu';
   }
 
-  _injectOpenContextMenuLazy (menus) {
-    const module = getModule([ 'openContextMenuLazy' ], false);
+  _injectOpenContextMenuLazy(menus) {
+    const module = getModule(['openContextMenuLazy'], false);
 
-    inject('guild-profile-context-lazy-menu', module, 'openContextMenuLazy', ([ event, lazyRender, params ]) => {
+    inject('guild-profile-context-lazy-menu', module, 'openContextMenuLazy', ([event, lazyRender, params]) => {
       const warpLazyRender = async () => {
         const render = await lazyRender(event);
 
@@ -193,13 +222,13 @@ module.exports = class GuildProfile extends Plugin {
         };
       };
 
-      return [ event, warpLazyRender, params ];
+      return [event, warpLazyRender, params];
     }, true);
   }
 
-  _openModalHandler (element) {
-    const { openUserProfileModal } = getModule([ 'openUserProfileModal' ], false);
-    const module = getModule([ 'openModalLazy' ], false);
+  _openModalHandler(element) {
+    const { openUserProfileModal } = getModule(['openUserProfileModal'], false);
+    const module = getModule(['openModalLazy'], false);
 
     if (getModuleByDisplayName('UserProfileModal', false) !== null) {
       open(element);
@@ -211,10 +240,10 @@ module.exports = class GuildProfile extends Plugin {
     // but the user will not see the final UserProfileModal -
     // since it will be replaced at the last stage with our element
 
-    const { ModalRoot } = getModule([ 'ModalRoot' ], false);
+    const { ModalRoot } = getModule(['ModalRoot'], false);
     const userId = getCurrentUser().id;
 
-    inject('guild-profile-open-modal-lazy', module, 'openModalLazy', ([ initLazyRender ]) => {
+    inject('guild-profile-open-modal-lazy', module, 'openModalLazy', ([initLazyRender]) => {
       const warpInitLazyRender = () => {
         const lazyRender = initLazyRender();
 
@@ -226,7 +255,7 @@ module.exports = class GuildProfile extends Plugin {
 
             if (res?.type?.displayName === 'UserProfileModal') {
               const { props } = res;
-              const { root } = getModule([ 'root', 'body' ], false);
+              const { root } = getModule(['root', 'body'], false);
 
               if (props.guildId === '@me' && props.user.id === userId) {
                 if (props.transitionState === 3) { // = close modal
@@ -245,7 +274,7 @@ module.exports = class GuildProfile extends Plugin {
         });
       };
 
-      return [ warpInitLazyRender ];
+      return [warpInitLazyRender];
     }, true);
 
     openUserProfileModal({ userId });
