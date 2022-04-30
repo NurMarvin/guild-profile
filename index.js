@@ -56,6 +56,7 @@ module.exports = class GuildProfile extends Plugin {
 
     // Powercord doesn't provide the full webpack require instance object sadly.
     const req = webpackChunkdiscord_app.push([[Symbol()], [], _ => _]);
+    webpackChunkdiscord_app.pop();
 
     let modules = [];
     for (const id in req.m) {
