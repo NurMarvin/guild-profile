@@ -20,3 +20,22 @@
   overflow: hidden;
   width: 100%;
 }
+
+/* Copied from Discord as it's lazy loaded from profile modal so breaks appearance if it hasn't been opened before */
+.guild-profile-root {
+  border-radius: 8px;
+  overflow: hidden;
+  position: relative;
+  width: 600px;
+  background-color: var(--background-floating);
+  max-height: unset;
+  box-shadow: none !important;
+}
+
+.guild-profile-topsection {
+  background-color: var(--background-floating);
+}
+
+.guild-profile-body {
+  height: 240px;
+}

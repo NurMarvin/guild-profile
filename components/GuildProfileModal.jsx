@@ -29,7 +29,8 @@ class GuildProfileTabBar extends React.PureComponent {
     super(props);
 
     this.modules = {
-      ...getModule(['topSection'], false),
+      ...getModule([ 'top', 'item' ], false),
+      ...getModule([ 'tabBarContainer', 'tabBarItemSpacing' ], false),
     };
   }
   render() {
@@ -72,7 +73,8 @@ class GuildProfileModal extends React.PureComponent {
     super(props);
 
     this.modules = {
-      ...getModule(['topSection'], false),
+      ...getModule([ 'top', 'item' ], false),
+      ...getModule([ 'tabBarContainer', 'tabBarItemSpacing' ], false)
     };
 
     this.state = {
@@ -115,8 +117,8 @@ class GuildProfileModal extends React.PureComponent {
     }
 
     return (
-      <ModalRoot className={this.modules.root} transitionState={1}>
-        <div className={this.modules.topSection}>
+      <ModalRoot className="guild-profile-root" transitionState={1}>
+        <div className="guild-profile-topsection">
           <GuildProfileHeader guild={guild} counts={counts} />
           <GuildProfileTabBar
             setSection={(section) => this.setState({ section })}
@@ -124,7 +126,7 @@ class GuildProfileModal extends React.PureComponent {
             guild={guild}
           />
         </div>
-        <div className={this.modules.body}>{section}</div>
+        <div className="guild-profile-body">{section}</div>
       </ModalRoot>
     );
   }
