@@ -8,7 +8,7 @@ const { FluxActions } = require('../constants');
 
 module.exports = {
   updateMemberCounts: async (memberCountsUpdate) => {
-    FluxDispatcher.dirtyDispatch({
+    FluxDispatcher.dispatch({
       type: FluxActions.UPDATE_MEMBER_COUNTS,
       ...memberCountsUpdate
     });
