@@ -7,7 +7,7 @@ Need help with the plugin? Feel free to drop into the [support server](https://n
 
 ## Preview
 
-![Preview Image](https://i.imgur.com/qZ3wjCI.png)
+![Preview Image](https://i.imgur.com/jNOxmBU.png)
 
 ## Installation
 
