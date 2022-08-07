@@ -84,7 +84,7 @@ module.exports = class GuildBanner extends React.PureComponent {
       );
       let url =
         (cdnHost
-          ? `${location.protocol}//${cdnHost}/banners/${id}/${banner}`
+          ? `${location.protocol}//${cdnHost}/banners/${id}/${banner}.${extension}`
           : Endpoints.GUILD_BANNER(id, banner, extension)) +
         `?size=${bannerSize}`;
 
@@ -98,11 +98,14 @@ module.exports = class GuildBanner extends React.PureComponent {
     }
 
     return (
-      <div style={style} className={classes.join(" ")}>
+      <div
+        onMouseEnter={() => this.setState({ hovered: true })}
+        onMouseLeave={() => this.setState({ hovered: false })}
+        style={style}
+        className={classes.join(" ")}
+      >
         <Tooltip
           text={Messages.EXCLUSIVE_TO_SERVER_BANNER_FEATURE}
-          onMouseEnter={() => this.setState({ hovered: true })}
-          onMouseLeave={() => this.setState({ hovered: false })}
           className={this.modules.premiumIconWrapper}
         >
           {guild.banner && (
