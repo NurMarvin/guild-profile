@@ -26,7 +26,6 @@ const { getCurrentUser } = getModule(["getCurrentUser"], false);
 
 module.exports = class GuildProfile extends Plugin {
   async startPlugin() {
-    this.log("Icons provided by https://iconify.design/");
     powercord.api.i18n.loadAllStrings(i18n);
     this.loadStylesheet("styles.scss");
     this._injectMenu();
