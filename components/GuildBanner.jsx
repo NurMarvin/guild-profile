@@ -85,7 +85,7 @@ module.exports = class GuildBanner extends React.PureComponent {
       let url =
         (cdnHost
           ? `${location.protocol}//${cdnHost}/banners/${id}/${banner}.${extension}`
-          : Endpoints.GUILD_BANNER(id, banner, extension)) +
+          : this.modules.Endpoints.GUILD_BANNER(id, banner, extension)) +
         `?size=${bannerSize}`;
 
       if (extension === "jpg") {
