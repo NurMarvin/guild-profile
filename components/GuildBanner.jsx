@@ -24,8 +24,8 @@ module.exports = class GuildBanner extends React.PureComponent {
 
     this.modules = {
       ...getModule(["profileBannerPremium", "profileBanner"], false),
-      getPrimaryColor: getModule(["getPrimaryColorForAvatar"], false)
-        .getPrimaryColorForAvatar,
+      getPaletteForAvatar: getModule(["getPaletteForAvatar"], false)
+        .getPaletteForAvatar,
       getGuildIconURL: getModule(["getGuildIconURL"], false).getGuildIconURL,
       getGuildBannerURL: getModule(["getGuildBannerURL"], false)
         .getGuildBannerURL,
@@ -43,9 +43,10 @@ module.exports = class GuildBanner extends React.PureComponent {
     let color = Colors.BRAND;
 
     if (guild.icon) {
-      color = `rgb(${(
-        await this.modules.getPrimaryColor(this.modules.getGuildIconURL(guild))
-      ).join(", ")})`;
+      const palette = await this.modules.getPaletteForAvatar(
+        this.modules.getGuildIconURL(guild)
+      );
+      color = `rgb(${palette[0].join(", ")})`;
     }
 
     this.setState({ color });
