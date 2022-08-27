@@ -10,6 +10,7 @@ const {
   getModule,
   getModuleByDisplayName,
   FluxDispatcher,
+  subscribe,
   i18n: { Messages },
 } = require("powercord/webpack");
 const { open } = require("powercord/modal");
@@ -28,6 +29,7 @@ module.exports = class GuildProfile extends Plugin {
   async startPlugin() {
     powercord.api.i18n.loadAllStrings(i18n);
     this.loadStylesheet("styles.scss");
+    this._injectContextMenu();
     this._injectMenu();
 
     this.handleMemberListUpdate = this.handleMemberListUpdate.bind(this);
@@ -82,6 +84,42 @@ module.exports = class GuildProfile extends Plugin {
     return memberCounts;
   }
 
+  async _injectContextMenu() {
+    const Menu = await getModule(["MenuItem"]);
+    const getMemberCounts = (guildId) => {
+      return this.getMemberCounts(guildId);
+    };
+
+    subscribe(x => x.default?.displayName === "GuildContextMenuWrapper", GuildContextMenuWrapper => {
+      inject("guild-profile-context-menu", GuildContextMenuWrapper, "default", ([{ guild }], res) => {
+        const renderContextMenu = res.props.children.type;
+        res.props.children.type = (props) => {
+          const contextMenu = renderContextMenu(props);
+          contextMenu.props.children.unshift(
+            React.createElement(
+              Menu.MenuGroup,
+              null,
+              React.createElement(Menu.MenuItem, {
+                id: "guild-profile",
+                label: Messages.GUILD_PROFILE,
+                action: () =>
+                  this._openModalHandler(() =>
+                    React.createElement(GuildProfileModal, {
+                      guild,
+                      section: "GUILD_INFO",
+                      getMemberCounts,
+                    })
+                  ),
+              })
+            )
+          );
+          return contextMenu;
+        };
+        return res;
+      })
+    });
+  }
+
   async _injectMenu() {
     const id = "guild-profile";
     const Menu = await getModule(["MenuItem"]);
@@ -95,7 +133,7 @@ module.exports = class GuildProfile extends Plugin {
     inject("guild-profile-menu", Menu, "default", ([{ children }], res) => {
       const menuId = res.props.children.props.id;
 
-      if (menuId !== "guild-header-popout" && menuId !== "guild-context")
+      if (menuId !== "guild-header-popout")
         return res;
 
       if (!findInReactTree(res, (c) => c.props && c.props.id == id)) {
@@ -106,10 +144,7 @@ module.exports = class GuildProfile extends Plugin {
             React.createElement(Menu.MenuItem, {
               id,
               label: Messages.GUILD_PROFILE,
-              icon: () =>
-                menuId === "guild-header-popout"
-                  ? React.createElement(GuildProfileIcon)
-                  : null,
+              icon: () => React.createElement(GuildProfileIcon),
               action: () =>
                 this._openModalHandler(() =>
                   React.createElement(GuildProfileModal, {
@@ -191,9 +226,8 @@ module.exports = class GuildProfile extends Plugin {
 
   pluginWillUnload() {
     uninject("guild-profile-context-menu");
-    uninject("guild-profile-context-lazy-menu");
-    uninject("guild-profile-open-modal-lazy");
     uninject("guild-profile-menu");
+    uninject("guild-profile-open-modal-lazy");
     FluxDispatcher.unsubscribe(
       "GUILD_MEMBER_LIST_UPDATE",
       this.handleMemberListUpdate
